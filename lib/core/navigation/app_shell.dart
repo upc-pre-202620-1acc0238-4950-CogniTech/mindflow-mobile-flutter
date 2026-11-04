@@ -4,14 +4,13 @@ import '../../features/chat/presentation/chat_page.dart';
 import '../../features/habits/presentation/habits_page.dart';
 import '../../features/insights/presentation/insights_page.dart';
 import '../../features/journal/presentation/journal_list_page.dart';
+import '../../features/settings/presentation/settings_page.dart';
 import '../../features/today/presentation/today_page.dart';
 import '../theme/app_colors.dart';
-import '../widgets/coming_soon_page.dart';
 
 /// Bottom navigation shell: Today, Journal, Habits, Insights, Settings,
 /// plus the floating "Talk" button for the AI chat (W2) from any inner
-/// screen. Only Today is wired to real data in this branch; the rest are
-/// honest stubs until their own feature branches land.
+/// screen. All five tabs are wired to the real backend.
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
 
@@ -27,7 +26,7 @@ class _AppShellState extends State<AppShell> {
     JournalListPage(),
     HabitsPage(),
     InsightsPage(),
-    ComingSoonPage(title: 'Settings'),
+    SettingsPage(),
   ];
 
   @override
