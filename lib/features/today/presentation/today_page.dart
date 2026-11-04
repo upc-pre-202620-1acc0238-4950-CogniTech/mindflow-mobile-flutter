@@ -5,6 +5,8 @@ import '../../../core/di/service_locator.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../journal/presentation/entry_detail_page.dart';
 import '../../journal/presentation/new_entry_page.dart';
+import '../../notifications/presentation/notifications_page.dart';
+import '../../notifications/presentation/notifications_view_model.dart';
 import '../../pause/presentation/breathing_pause_page.dart';
 import '../../pause/presentation/micro_meditation_page.dart';
 import '../../wellness/presentation/wellness_exercises_page.dart';
@@ -68,21 +70,28 @@ class _TodayPageState extends State<TodayPage> {
                           ],
                         ),
                       ),
-                      if (_viewModel.pausedHabits > 0)
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: colors.warningSurface,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            '${_viewModel.pausedHabits} paused',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: colors.warningText),
-                          ),
-                        ),
+                      Row(
+                        children: [
+                          if (_viewModel.pausedHabits > 0) ...[
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: colors.warningSurface,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                '${_viewModel.pausedHabits} paused',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: colors.warningText),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                          ],
+                          const _NotificationBell(),
+                        ],
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -356,6 +365,65 @@ class _QuickPauseTile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _NotificationBell extends StatefulWidget {
+  const _NotificationBell();
+
+  @override
+  State<_NotificationBell> createState() => _NotificationBellState();
+}
+
+class _NotificationBellState extends State<_NotificationBell> {
+  late final NotificationsViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = getIt<NotificationsViewModel>();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return ListenableBuilder(
+      listenable: _viewModel,
+      builder: (context, _) {
+        return InkWell(
+          borderRadius: BorderRadius.circular(24),
+          onTap: () async {
+            await Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => const NotificationsPage()));
+            _viewModel.refreshUnreadCount();
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(6),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Icon(Icons.notifications_outlined, color: colors.text),
+                if (_viewModel.unreadCount > 0)
+                  Positioned(
+                    right: -2,
+                    top: -2,
+                    child: Container(
+                      padding: const EdgeInsets.all(3),
+                      decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                      constraints: const BoxConstraints(minWidth: 14, minHeight: 14),
+                      child: Text(
+                        _viewModel.unreadCount > 9 ? '9+' : '${_viewModel.unreadCount}',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

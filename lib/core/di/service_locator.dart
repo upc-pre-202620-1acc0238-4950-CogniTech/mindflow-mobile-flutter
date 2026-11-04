@@ -45,6 +45,12 @@ import '../../features/journal/infrastructure/journal_repository_impl.dart';
 import '../../features/journal/presentation/entry_detail_view_model.dart';
 import '../../features/journal/presentation/journal_list_view_model.dart';
 import '../../features/journal/presentation/new_entry_view_model.dart';
+import '../../features/notifications/application/get_notifications_use_case.dart';
+import '../../features/notifications/application/get_unread_count_use_case.dart';
+import '../../features/notifications/application/mark_all_notifications_read_use_case.dart';
+import '../../features/notifications/application/mark_notification_read_use_case.dart';
+import '../../features/notifications/infrastructure/notifications_api.dart';
+import '../../features/notifications/presentation/notifications_view_model.dart';
 import '../../features/profile/application/delete_account_use_case.dart';
 import '../../features/profile/application/get_profile_use_case.dart';
 import '../../features/profile/application/update_profile_use_case.dart';
@@ -114,6 +120,25 @@ void setupDependencies() {
         getProfile: getIt<GetProfileUseCase>(),
         updateProfile: getIt<UpdateProfileUseCase>(),
         deleteAccount: getIt<DeleteAccountUseCase>(),
+      ));
+
+  // Notifications
+  getIt.registerLazySingleton<NotificationsApi>(() => NotificationsApi(client: getIt<ApiClient>()));
+  getIt.registerLazySingleton<GetNotificationsUseCase>(
+      () => GetNotificationsUseCase(api: getIt<NotificationsApi>()));
+  getIt.registerLazySingleton<GetUnreadCountUseCase>(
+      () => GetUnreadCountUseCase(api: getIt<NotificationsApi>()));
+  getIt.registerLazySingleton<MarkNotificationReadUseCase>(
+      () => MarkNotificationReadUseCase(api: getIt<NotificationsApi>()));
+  getIt.registerLazySingleton<MarkAllNotificationsReadUseCase>(
+      () => MarkAllNotificationsReadUseCase(api: getIt<NotificationsApi>()));
+  // Singleton (not a per-page factory): the Today bell badge and the
+  // notifications list share the same unread-count state.
+  getIt.registerLazySingleton<NotificationsViewModel>(() => NotificationsViewModel(
+        getNotifications: getIt<GetNotificationsUseCase>(),
+        getUnreadCount: getIt<GetUnreadCountUseCase>(),
+        markRead: getIt<MarkNotificationReadUseCase>(),
+        markAllRead: getIt<MarkAllNotificationsReadUseCase>(),
       ));
 
   // Settings
