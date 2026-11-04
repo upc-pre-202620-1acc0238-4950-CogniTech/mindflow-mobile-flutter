@@ -45,13 +45,23 @@ import '../../features/journal/infrastructure/journal_repository_impl.dart';
 import '../../features/journal/presentation/entry_detail_view_model.dart';
 import '../../features/journal/presentation/journal_list_view_model.dart';
 import '../../features/journal/presentation/new_entry_view_model.dart';
+import '../../features/profile/application/delete_account_use_case.dart';
 import '../../features/profile/application/get_profile_use_case.dart';
+import '../../features/profile/application/update_profile_use_case.dart';
 import '../../features/profile/infrastructure/profile_api.dart';
+import '../../features/profile/presentation/profile_view_model.dart';
+import '../../features/settings/infrastructure/pin_api.dart';
+import '../../features/settings/infrastructure/subscription_api.dart';
+import '../../features/settings/presentation/settings_view_model.dart';
 import '../../features/today/application/load_today_use_case.dart';
 import '../../features/today/presentation/today_view_model.dart';
+import '../l10n/locale_controller.dart';
 import '../network/api_client.dart';
+import '../platform/privacy_channel.dart';
 import '../storage/app_database.dart';
+import '../storage/local_prefs.dart';
 import '../storage/token_storage.dart';
+import '../theme/theme_controller.dart';
 
 final getIt = GetIt.instance;
 
@@ -61,6 +71,10 @@ void setupDependencies() {
   getIt.registerLazySingleton<TokenStorage>(() => TokenStorage());
   getIt.registerLazySingleton<ApiClient>(
       () => ApiClient(tokenStorage: getIt<TokenStorage>()));
+  getIt.registerLazySingleton<LocalPrefs>(() => LocalPrefs());
+  getIt.registerLazySingleton<ThemeController>(() => ThemeController(prefs: getIt<LocalPrefs>()));
+  getIt.registerLazySingleton<LocaleController>(() => LocaleController(prefs: getIt<LocalPrefs>()));
+  getIt.registerLazySingleton<PrivacyChannel>(() => PrivacyChannel());
 
   // Auth
   getIt.registerLazySingleton<AuthApi>(() => AuthApi(client: getIt<ApiClient>()));
@@ -89,6 +103,29 @@ void setupDependencies() {
   getIt.registerLazySingleton<ProfileApi>(() => ProfileApi(client: getIt<ApiClient>()));
   getIt.registerLazySingleton<GetProfileUseCase>(
       () => GetProfileUseCase(api: getIt<ProfileApi>()));
+  getIt.registerLazySingleton<UpdateProfileUseCase>(
+      () => UpdateProfileUseCase(api: getIt<ProfileApi>()));
+  getIt.registerLazySingleton<DeleteAccountUseCase>(
+      () => DeleteAccountUseCase(api: getIt<ProfileApi>()));
+  getIt.registerFactory<ProfileViewModel>(() => ProfileViewModel(
+        getProfile: getIt<GetProfileUseCase>(),
+        updateProfile: getIt<UpdateProfileUseCase>(),
+        deleteAccount: getIt<DeleteAccountUseCase>(),
+      ));
+
+  // Settings
+  getIt.registerLazySingleton<PinApi>(() => PinApi(client: getIt<ApiClient>()));
+  getIt.registerLazySingleton<SubscriptionApi>(() => SubscriptionApi(client: getIt<ApiClient>()));
+  getIt.registerFactory<SettingsViewModel>(() => SettingsViewModel(
+        getProfile: getIt<GetProfileUseCase>(),
+        pinApi: getIt<PinApi>(),
+        subscriptionApi: getIt<SubscriptionApi>(),
+        authRepository: getIt<AuthRepository>(),
+        themeController: getIt<ThemeController>(),
+        localeController: getIt<LocaleController>(),
+        prefs: getIt<LocalPrefs>(),
+        privacyChannel: getIt<PrivacyChannel>(),
+      ));
 
   // Chat
   getIt.registerLazySingleton<ChatApi>(() => ChatApi(client: getIt<ApiClient>()));
