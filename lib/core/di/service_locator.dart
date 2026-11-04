@@ -63,6 +63,13 @@ import '../../features/subscriptions/application/get_plans_use_case.dart';
 import '../../features/subscriptions/application/start_checkout_use_case.dart';
 import '../../features/subscriptions/infrastructure/subscriptions_api.dart';
 import '../../features/subscriptions/presentation/plans_view_model.dart';
+import '../../features/support/application/create_ticket_use_case.dart';
+import '../../features/support/application/get_ticket_use_case.dart';
+import '../../features/support/application/get_tickets_use_case.dart';
+import '../../features/support/application/send_ticket_message_use_case.dart';
+import '../../features/support/infrastructure/support_api.dart';
+import '../../features/support/presentation/support_view_model.dart';
+import '../../features/support/presentation/ticket_detail_view_model.dart';
 import '../../features/today/application/load_today_use_case.dart';
 import '../../features/today/presentation/today_view_model.dart';
 import '../../features/wellness/application/get_wellness_exercises_use_case.dart';
@@ -170,6 +177,24 @@ void setupDependencies() {
         localeController: getIt<LocaleController>(),
         prefs: getIt<LocalPrefs>(),
         privacyChannel: getIt<PrivacyChannel>(),
+      ));
+
+  // Support
+  getIt.registerLazySingleton<SupportApi>(() => SupportApi(client: getIt<ApiClient>()));
+  getIt.registerLazySingleton<GetTicketsUseCase>(
+      () => GetTicketsUseCase(api: getIt<SupportApi>()));
+  getIt.registerLazySingleton<GetTicketUseCase>(() => GetTicketUseCase(api: getIt<SupportApi>()));
+  getIt.registerLazySingleton<CreateTicketUseCase>(
+      () => CreateTicketUseCase(api: getIt<SupportApi>()));
+  getIt.registerLazySingleton<SendTicketMessageUseCase>(
+      () => SendTicketMessageUseCase(api: getIt<SupportApi>()));
+  getIt.registerFactory<SupportViewModel>(() => SupportViewModel(
+        getTickets: getIt<GetTicketsUseCase>(),
+        createTicket: getIt<CreateTicketUseCase>(),
+      ));
+  getIt.registerFactory<TicketDetailViewModel>(() => TicketDetailViewModel(
+        getTicket: getIt<GetTicketUseCase>(),
+        sendMessage: getIt<SendTicketMessageUseCase>(),
       ));
 
   // Chat
