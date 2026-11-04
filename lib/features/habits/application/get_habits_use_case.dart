@@ -1,9 +1,9 @@
 import '../domain/habit.dart';
-import '../infrastructure/habits_api.dart';
+import '../domain/habits_repository.dart';
 
 class GetHabitsUseCase {
-  final HabitsApi api;
-  GetHabitsUseCase({required this.api});
+  final HabitsRepository repository;
+  GetHabitsUseCase({required this.repository});
 
-  Future<List<Habit>> execute() => api.getHabits();
+  Future<List<Habit>> execute() => repository.getHabits();
 }
