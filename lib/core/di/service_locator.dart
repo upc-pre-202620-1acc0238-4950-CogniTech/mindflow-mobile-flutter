@@ -57,8 +57,12 @@ import '../../features/profile/application/update_profile_use_case.dart';
 import '../../features/profile/infrastructure/profile_api.dart';
 import '../../features/profile/presentation/profile_view_model.dart';
 import '../../features/settings/infrastructure/pin_api.dart';
-import '../../features/settings/infrastructure/subscription_api.dart';
 import '../../features/settings/presentation/settings_view_model.dart';
+import '../../features/subscriptions/application/get_my_subscription_use_case.dart';
+import '../../features/subscriptions/application/get_plans_use_case.dart';
+import '../../features/subscriptions/application/start_checkout_use_case.dart';
+import '../../features/subscriptions/infrastructure/subscriptions_api.dart';
+import '../../features/subscriptions/presentation/plans_view_model.dart';
 import '../../features/today/application/load_today_use_case.dart';
 import '../../features/today/presentation/today_view_model.dart';
 import '../../features/wellness/application/get_wellness_exercises_use_case.dart';
@@ -141,13 +145,26 @@ void setupDependencies() {
         markAllRead: getIt<MarkAllNotificationsReadUseCase>(),
       ));
 
+  // Subscriptions
+  getIt.registerLazySingleton<SubscriptionsApi>(() => SubscriptionsApi(client: getIt<ApiClient>()));
+  getIt.registerLazySingleton<GetPlansUseCase>(
+      () => GetPlansUseCase(api: getIt<SubscriptionsApi>()));
+  getIt.registerLazySingleton<GetMySubscriptionUseCase>(
+      () => GetMySubscriptionUseCase(api: getIt<SubscriptionsApi>()));
+  getIt.registerLazySingleton<StartCheckoutUseCase>(
+      () => StartCheckoutUseCase(api: getIt<SubscriptionsApi>()));
+  getIt.registerFactory<PlansViewModel>(() => PlansViewModel(
+        getPlans: getIt<GetPlansUseCase>(),
+        getMySubscription: getIt<GetMySubscriptionUseCase>(),
+        startCheckout: getIt<StartCheckoutUseCase>(),
+      ));
+
   // Settings
   getIt.registerLazySingleton<PinApi>(() => PinApi(client: getIt<ApiClient>()));
-  getIt.registerLazySingleton<SubscriptionApi>(() => SubscriptionApi(client: getIt<ApiClient>()));
   getIt.registerFactory<SettingsViewModel>(() => SettingsViewModel(
         getProfile: getIt<GetProfileUseCase>(),
         pinApi: getIt<PinApi>(),
-        subscriptionApi: getIt<SubscriptionApi>(),
+        getMySubscription: getIt<GetMySubscriptionUseCase>(),
         authRepository: getIt<AuthRepository>(),
         themeController: getIt<ThemeController>(),
         localeController: getIt<LocaleController>(),
