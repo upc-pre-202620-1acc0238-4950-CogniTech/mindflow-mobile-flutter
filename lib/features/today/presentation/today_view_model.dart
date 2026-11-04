@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../journal/application/create_journal_entry_use_case.dart';
 import '../../journal/domain/journal_entry.dart';
+import '../../wellness/domain/wellness_exercise.dart';
 import '../application/load_today_use_case.dart';
 
 class MoodOption {
@@ -76,4 +77,14 @@ class TodayViewModel extends ChangeNotifier {
   int get activeHabits => snapshot?.habits.where((h) => !h.pausedByAi).length ?? 0;
   int get pausedHabits => snapshot?.habits.where((h) => h.pausedByAi).length ?? 0;
   int get totalHabits => snapshot?.habits.length ?? 0;
+
+  WellnessExercise? get featuredBreathing {
+    final list = snapshot?.exercises.where((e) => e.type == WellnessExercise.typeBreathing).toList();
+    return (list == null || list.isEmpty) ? null : list.first;
+  }
+
+  WellnessExercise? get featuredMeditation {
+    final list = snapshot?.exercises.where((e) => e.type == WellnessExercise.typeMeditation).toList();
+    return (list == null || list.isEmpty) ? null : list.first;
+  }
 }

@@ -7,6 +7,7 @@ import '../../journal/presentation/entry_detail_page.dart';
 import '../../journal/presentation/new_entry_page.dart';
 import '../../pause/presentation/breathing_pause_page.dart';
 import '../../pause/presentation/micro_meditation_page.dart';
+import '../../wellness/presentation/wellness_exercises_page.dart';
 import 'today_view_model.dart';
 
 class TodayPage extends StatefulWidget {
@@ -201,31 +202,51 @@ class _TodayPageState extends State<TodayPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Text('Quick pauses',
-                      style: TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.w600, color: colors.textSecondary)),
-                  const SizedBox(height: 10),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: _QuickPauseTile(
-                          title: 'Breathing 4-7-8',
-                          subtitle: 'About 2 min',
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => const BreathingPausePage())),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: _QuickPauseTile(
-                          title: 'Micro-meditation',
-                          subtitle: 'About 3 min',
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => const MicroMeditationPage())),
-                        ),
+                      Text('Quick pauses',
+                          style: TextStyle(
+                              fontSize: 13, fontWeight: FontWeight.w600, color: colors.textSecondary)),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const WellnessExercisesPage())),
+                        style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),
+                        child: const Text('See all', style: TextStyle(fontSize: 13)),
                       ),
                     ],
                   ),
+                  const SizedBox(height: 4),
+                  if (_viewModel.featuredBreathing == null && _viewModel.featuredMeditation == null)
+                    Text('No guided exercises available right now.',
+                        style: TextStyle(fontSize: 14, color: colors.textSecondary))
+                  else
+                    Row(
+                      children: [
+                        if (_viewModel.featuredBreathing != null)
+                          Expanded(
+                            child: _QuickPauseTile(
+                              title: _viewModel.featuredBreathing!.name,
+                              subtitle: _viewModel.featuredBreathing!.durationLabel,
+                              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) =>
+                                      BreathingPausePage(exercise: _viewModel.featuredBreathing!))),
+                            ),
+                          ),
+                        if (_viewModel.featuredBreathing != null && _viewModel.featuredMeditation != null)
+                          const SizedBox(width: 10),
+                        if (_viewModel.featuredMeditation != null)
+                          Expanded(
+                            child: _QuickPauseTile(
+                              title: _viewModel.featuredMeditation!.name,
+                              subtitle: _viewModel.featuredMeditation!.durationLabel,
+                              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) =>
+                                      MicroMeditationPage(exercise: _viewModel.featuredMeditation!))),
+                            ),
+                          ),
+                      ],
+                    ),
                   if ((_viewModel.snapshot?.recentEntries.isNotEmpty ?? false)) ...[
                     const SizedBox(height: 24),
                     Text('Recent entries',

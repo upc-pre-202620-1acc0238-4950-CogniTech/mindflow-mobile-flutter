@@ -55,6 +55,9 @@ import '../../features/settings/infrastructure/subscription_api.dart';
 import '../../features/settings/presentation/settings_view_model.dart';
 import '../../features/today/application/load_today_use_case.dart';
 import '../../features/today/presentation/today_view_model.dart';
+import '../../features/wellness/application/get_wellness_exercises_use_case.dart';
+import '../../features/wellness/infrastructure/wellness_api.dart';
+import '../../features/wellness/presentation/wellness_exercises_view_model.dart';
 import '../l10n/locale_controller.dart';
 import '../network/api_client.dart';
 import '../platform/privacy_channel.dart';
@@ -211,11 +214,19 @@ void setupDependencies() {
         exportReport: getIt<ExportReportUseCase>(),
       ));
 
+  // Wellness
+  getIt.registerLazySingleton<WellnessApi>(() => WellnessApi(client: getIt<ApiClient>()));
+  getIt.registerLazySingleton<GetWellnessExercisesUseCase>(
+      () => GetWellnessExercisesUseCase(api: getIt<WellnessApi>()));
+  getIt.registerFactory<WellnessExercisesViewModel>(
+      () => WellnessExercisesViewModel(getExercises: getIt<GetWellnessExercisesUseCase>()));
+
   // Today
   getIt.registerLazySingleton<LoadTodayUseCase>(() => LoadTodayUseCase(
         getProfile: getIt<GetProfileUseCase>(),
         getHabits: getIt<GetHabitsUseCase>(),
         getRecentEntries: getIt<GetRecentEntriesUseCase>(),
+        getExercises: getIt<GetWellnessExercisesUseCase>(),
       ));
   getIt.registerFactory<TodayViewModel>(() => TodayViewModel(
         loadToday: getIt<LoadTodayUseCase>(),
