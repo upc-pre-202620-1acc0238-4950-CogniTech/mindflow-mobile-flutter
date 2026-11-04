@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../core/di/service_locator.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../chat/presentation/chat_page.dart';
-import '../../pause/presentation/breathing_pause_page.dart';
+import '../../wellness/presentation/wellness_exercises_page.dart';
 import 'entry_detail_view_model.dart';
 import 'new_entry_view_model.dart';
 
@@ -223,14 +223,14 @@ class _EntryDetailPageState extends State<EntryDetailPage> {
                     ),
                     const SizedBox(height: 8),
                     OutlinedButton(
-                      onPressed: () => Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) => const BreathingPausePage())),
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const WellnessExercisesPage())),
                       style: OutlinedButton.styleFrom(
                         minimumSize: const Size.fromHeight(48),
                         foregroundColor: colors.text,
                         side: const BorderSide(color: Color(0xFFB8C0CF)),
                       ),
-                      child: const Text('Start a breathing pause'),
+                      child: const Text('Start a guided pause'),
                     ),
                   ],
                 ],
