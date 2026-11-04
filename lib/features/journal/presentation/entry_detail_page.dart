@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/di/service_locator.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../ai_feedback/presentation/ai_rating_stars.dart';
 import '../../chat/presentation/chat_page.dart';
 import '../../wellness/presentation/wellness_exercises_page.dart';
 import 'entry_detail_view_model.dart';
@@ -212,6 +213,13 @@ class _EntryDetailPageState extends State<EntryDetailPage> {
                                   fontWeight: FontWeight.w500)),
                           const SizedBox(height: 6),
                           Text(entry.aiResponse!, style: const TextStyle(fontSize: 16, height: 1.5)),
+                          const SizedBox(height: 10),
+                          AiRatingStars(
+                            prompt: 'Was this reply helpful?',
+                            submittedRating: _viewModel.myAiRating,
+                            isSubmitting: _viewModel.isSubmittingAiRating,
+                            onRate: _viewModel.rateAiResponse,
+                          ),
                         ],
                       ),
                     ),

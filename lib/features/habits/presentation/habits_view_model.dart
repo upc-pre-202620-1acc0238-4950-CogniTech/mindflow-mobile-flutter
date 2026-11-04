@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../ai_feedback/application/submit_ai_feedback_use_case.dart';
 import '../application/create_habit_use_case.dart';
 import '../application/delete_habit_use_case.dart';
 import '../application/get_habit_logs_use_case.dart';
@@ -14,6 +15,7 @@ class HabitsViewModel extends ChangeNotifier {
   final CreateHabitUseCase createHabit;
   final DeleteHabitUseCase deleteHabit;
   final ToggleHabitTodayUseCase toggleToday;
+  final SubmitAiFeedbackUseCase submitAiFeedback;
 
   HabitsViewModel({
     required this.getHabits,
@@ -21,6 +23,7 @@ class HabitsViewModel extends ChangeNotifier {
     required this.createHabit,
     required this.deleteHabit,
     required this.toggleToday,
+    required this.submitAiFeedback,
   }) {
     refresh();
   }
@@ -37,6 +40,9 @@ class HabitsViewModel extends ChangeNotifier {
 
   int statusFilterIndex = 0;
   String filterText = '';
+
+  final Map<int, int> aiPauseRatings = {};
+  int? submittingRatingForHabitId;
 
   Future<void> refresh() async {
     isLoading = true;
@@ -135,6 +141,20 @@ class HabitsViewModel extends ChangeNotifier {
     } catch (_) {
       errorMessage = 'Could not delete that habit. Try again.';
       isMutating = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> rateAiPause(Habit habit, int rating) async {
+    submittingRatingForHabitId = habit.id;
+    notifyListeners();
+    try {
+      await submitAiFeedback.execute(contentId: habit.id, contentType: 'habit', rating: rating);
+      aiPauseRatings[habit.id] = rating;
+    } catch (_) {
+      errorMessage = 'Could not save your rating.';
+    } finally {
+      submittingRatingForHabitId = null;
       notifyListeners();
     }
   }

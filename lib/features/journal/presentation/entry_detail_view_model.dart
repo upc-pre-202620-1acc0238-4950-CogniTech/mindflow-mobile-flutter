@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/network/api_exception.dart';
+import '../../ai_feedback/application/submit_ai_feedback_use_case.dart';
 import '../application/delete_journal_entry_use_case.dart';
 import '../application/get_journal_entry_use_case.dart';
 import '../application/update_journal_entry_use_case.dart';
@@ -10,11 +11,13 @@ class EntryDetailViewModel extends ChangeNotifier {
   final GetJournalEntryUseCase getEntry;
   final UpdateJournalEntryUseCase updateEntry;
   final DeleteJournalEntryUseCase deleteEntry;
+  final SubmitAiFeedbackUseCase submitAiFeedback;
 
   EntryDetailViewModel({
     required this.getEntry,
     required this.updateEntry,
     required this.deleteEntry,
+    required this.submitAiFeedback,
   });
 
   bool isLoading = true;
@@ -22,6 +25,9 @@ class EntryDetailViewModel extends ChangeNotifier {
   bool isDeleted = false;
   String? errorMessage;
   JournalEntry? entry;
+
+  bool isSubmittingAiRating = false;
+  int? myAiRating;
 
   Future<void> load(int id) async {
     isLoading = true;
@@ -77,6 +83,25 @@ class EntryDetailViewModel extends ChangeNotifier {
       return false;
     } finally {
       isSaving = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> rateAiResponse(int rating) async {
+    if (entry == null) return;
+    isSubmittingAiRating = true;
+    notifyListeners();
+    try {
+      await submitAiFeedback.execute(
+        contentId: entry!.id,
+        contentType: 'journal',
+        rating: rating,
+      );
+      myAiRating = rating;
+    } catch (_) {
+      errorMessage = 'Could not save your rating.';
+    } finally {
+      isSubmittingAiRating = false;
       notifyListeners();
     }
   }
