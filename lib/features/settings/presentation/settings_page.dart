@@ -3,10 +3,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/di/service_locator.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/widgets/coming_soon_page.dart';
 import '../../auth/presentation/login_page.dart';
 import '../../profile/presentation/profile_page.dart';
 import '../../subscriptions/presentation/plans_page.dart';
+import '../../support/presentation/support_page.dart';
 import '../../terms/presentation/terms_page.dart';
 import 'pin_entry_dialog.dart';
 import 'settings_view_model.dart';
@@ -171,7 +171,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: 'Support and FAQ',
                   subtitle: 'Send a ticket or read common questions',
                   onTap: () => Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => const ComingSoonPage(title: 'Support'))),
+                      .push(MaterialPageRoute(builder: (_) => const SupportPage())),
                 ),
                 _SettingsNavRow(
                   title: 'Terms and privacy',
