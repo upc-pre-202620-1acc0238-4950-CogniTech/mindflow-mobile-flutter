@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/di/service_locator.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../journal/presentation/entry_detail_page.dart';
 import '../../journal/presentation/new_entry_page.dart';
 import '../../pause/presentation/breathing_pause_page.dart';
 import '../../pause/presentation/micro_meditation_page.dart';
@@ -176,8 +177,11 @@ class _TodayPageState extends State<TodayPage> {
                   const SizedBox(height: 14),
                   InkWell(
                     borderRadius: BorderRadius.circular(14),
-                    onTap: () => Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => const NewEntryPage())),
+                    onTap: () async {
+                      final saved = await Navigator.of(context).push<bool>(
+                          MaterialPageRoute(builder: (_) => const NewEntryPage()));
+                      if (saved == true) _viewModel.refresh();
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
@@ -231,26 +235,34 @@ class _TodayPageState extends State<TodayPage> {
                             color: colors.textSecondary)),
                     const SizedBox(height: 10),
                     for (final entry in _viewModel.snapshot!.recentEntries)
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: colors.border),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(DateFormat('d MMM').format(entry.date),
-                                style: TextStyle(fontSize: 13, color: colors.textSecondary)),
-                            const SizedBox(height: 4),
-                            Text(
-                              entry.content,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontSize: 15),
-                            ),
-                          ],
+                      InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () async {
+                          await Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => EntryDetailPage(entryId: entry.id)));
+                          _viewModel.refresh();
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: colors.border),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(DateFormat('d MMM').format(entry.date),
+                                  style: TextStyle(fontSize: 13, color: colors.textSecondary)),
+                              const SizedBox(height: 4),
+                              Text(
+                                entry.content,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                   ],

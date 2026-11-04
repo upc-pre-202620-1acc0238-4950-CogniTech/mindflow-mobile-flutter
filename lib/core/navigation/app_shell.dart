@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../features/journal/presentation/journal_list_page.dart';
 import '../../features/today/presentation/today_page.dart';
 import '../theme/app_colors.dart';
 import '../widgets/coming_soon_page.dart';
@@ -20,7 +21,7 @@ class _AppShellState extends State<AppShell> {
 
   static const _pages = [
     TodayPage(),
-    ComingSoonPage(title: 'Journal'),
+    JournalListPage(),
     ComingSoonPage(title: 'Habits'),
     ComingSoonPage(title: 'Insights'),
     ComingSoonPage(title: 'Settings'),

@@ -13,10 +13,16 @@ import '../../features/auth/presentation/register_view_model.dart';
 import '../../features/habits/application/get_habits_use_case.dart';
 import '../../features/habits/infrastructure/habits_api.dart';
 import '../../features/journal/application/create_journal_entry_use_case.dart';
+import '../../features/journal/application/delete_journal_entry_use_case.dart';
+import '../../features/journal/application/get_journal_entries_use_case.dart';
+import '../../features/journal/application/get_journal_entry_use_case.dart';
 import '../../features/journal/application/get_recent_entries_use_case.dart';
+import '../../features/journal/application/update_journal_entry_use_case.dart';
 import '../../features/journal/domain/journal_repository.dart';
 import '../../features/journal/infrastructure/journal_api.dart';
 import '../../features/journal/infrastructure/journal_repository_impl.dart';
+import '../../features/journal/presentation/entry_detail_view_model.dart';
+import '../../features/journal/presentation/journal_list_view_model.dart';
 import '../../features/journal/presentation/new_entry_view_model.dart';
 import '../../features/profile/application/get_profile_use_case.dart';
 import '../../features/profile/infrastructure/profile_api.dart';
@@ -76,8 +82,23 @@ void setupDependencies() {
       () => GetRecentEntriesUseCase(repository: getIt<JournalRepository>()));
   getIt.registerLazySingleton<CreateJournalEntryUseCase>(
       () => CreateJournalEntryUseCase(repository: getIt<JournalRepository>()));
+  getIt.registerLazySingleton<GetJournalEntriesUseCase>(
+      () => GetJournalEntriesUseCase(repository: getIt<JournalRepository>()));
+  getIt.registerLazySingleton<GetJournalEntryUseCase>(
+      () => GetJournalEntryUseCase(repository: getIt<JournalRepository>()));
+  getIt.registerLazySingleton<UpdateJournalEntryUseCase>(
+      () => UpdateJournalEntryUseCase(repository: getIt<JournalRepository>()));
+  getIt.registerLazySingleton<DeleteJournalEntryUseCase>(
+      () => DeleteJournalEntryUseCase(repository: getIt<JournalRepository>()));
   getIt.registerFactory<NewEntryViewModel>(
       () => NewEntryViewModel(createEntry: getIt<CreateJournalEntryUseCase>()));
+  getIt.registerFactory<JournalListViewModel>(
+      () => JournalListViewModel(getEntries: getIt<GetJournalEntriesUseCase>()));
+  getIt.registerFactory<EntryDetailViewModel>(() => EntryDetailViewModel(
+        getEntry: getIt<GetJournalEntryUseCase>(),
+        updateEntry: getIt<UpdateJournalEntryUseCase>(),
+        deleteEntry: getIt<DeleteJournalEntryUseCase>(),
+      ));
 
   // Today
   getIt.registerLazySingleton<LoadTodayUseCase>(() => LoadTodayUseCase(
