@@ -95,4 +95,14 @@ class ApiClient {
         await _client.delete(_uri(path), headers: await _headers(auth: auth));
     return _decode(response);
   }
+
+  /// For non-JSON responses (file downloads such as the CSV/PDF reports).
+  Future<List<int>> getBytes(String path, {Map<String, dynamic>? query, bool auth = true}) async {
+    final response =
+        await _client.get(_uri(path, query), headers: await _headers(auth: auth));
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw ApiException(response.statusCode, 'Request failed (${response.statusCode}).');
+    }
+    return response.bodyBytes;
+  }
 }

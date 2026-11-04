@@ -29,6 +29,10 @@ import '../../features/habits/infrastructure/habits_api.dart';
 import '../../features/habits/infrastructure/habits_repository_impl.dart';
 import '../../features/habits/presentation/habit_suggestions_view_model.dart';
 import '../../features/habits/presentation/habits_view_model.dart';
+import '../../features/insights/application/export_report_use_case.dart';
+import '../../features/insights/application/get_dashboard_use_case.dart';
+import '../../features/insights/infrastructure/analytics_api.dart';
+import '../../features/insights/presentation/insights_view_model.dart';
 import '../../features/journal/application/create_journal_entry_use_case.dart';
 import '../../features/journal/application/delete_journal_entry_use_case.dart';
 import '../../features/journal/application/get_journal_entries_use_case.dart';
@@ -156,6 +160,18 @@ void setupDependencies() {
         getEntry: getIt<GetJournalEntryUseCase>(),
         updateEntry: getIt<UpdateJournalEntryUseCase>(),
         deleteEntry: getIt<DeleteJournalEntryUseCase>(),
+      ));
+
+  // Insights
+  getIt.registerLazySingleton<AnalyticsApi>(() => AnalyticsApi(client: getIt<ApiClient>()));
+  getIt.registerLazySingleton<GetDashboardUseCase>(
+      () => GetDashboardUseCase(api: getIt<AnalyticsApi>()));
+  getIt.registerLazySingleton<ExportReportUseCase>(
+      () => ExportReportUseCase(api: getIt<AnalyticsApi>()));
+  getIt.registerFactory<InsightsViewModel>(() => InsightsViewModel(
+        getDashboard: getIt<GetDashboardUseCase>(),
+        getHabits: getIt<GetHabitsUseCase>(),
+        exportReport: getIt<ExportReportUseCase>(),
       ));
 
   // Today

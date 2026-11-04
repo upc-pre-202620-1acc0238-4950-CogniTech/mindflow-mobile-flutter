@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../features/chat/presentation/chat_page.dart';
 import '../../features/habits/presentation/habits_page.dart';
+import '../../features/insights/presentation/insights_page.dart';
 import '../../features/journal/presentation/journal_list_page.dart';
 import '../../features/today/presentation/today_page.dart';
 import '../theme/app_colors.dart';
@@ -25,7 +26,7 @@ class _AppShellState extends State<AppShell> {
     TodayPage(),
     JournalListPage(),
     HabitsPage(),
-    ComingSoonPage(title: 'Insights'),
+    InsightsPage(),
     ComingSoonPage(title: 'Settings'),
   ];
 
