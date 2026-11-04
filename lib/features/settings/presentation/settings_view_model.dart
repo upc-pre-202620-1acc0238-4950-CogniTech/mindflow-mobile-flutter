@@ -8,8 +8,9 @@ import '../../../core/theme/theme_controller.dart';
 import '../../auth/domain/auth_repository.dart';
 import '../../profile/application/get_profile_use_case.dart';
 import '../../profile/domain/user_profile.dart';
+import '../../subscriptions/application/get_my_subscription_use_case.dart';
+import '../../subscriptions/domain/subscription_plan.dart';
 import '../infrastructure/pin_api.dart';
-import '../infrastructure/subscription_api.dart';
 
 class SettingsViewModel extends ChangeNotifier {
   static const _hideInSwitcherKey = 'hide_in_switcher';
@@ -17,7 +18,7 @@ class SettingsViewModel extends ChangeNotifier {
 
   final GetProfileUseCase getProfile;
   final PinApi pinApi;
-  final SubscriptionApi subscriptionApi;
+  final GetMySubscriptionUseCase getMySubscription;
   final AuthRepository authRepository;
   final ThemeController themeController;
   final LocaleController localeController;
@@ -27,7 +28,7 @@ class SettingsViewModel extends ChangeNotifier {
   SettingsViewModel({
     required this.getProfile,
     required this.pinApi,
-    required this.subscriptionApi,
+    required this.getMySubscription,
     required this.authRepository,
     required this.themeController,
     required this.localeController,
@@ -54,13 +55,13 @@ class SettingsViewModel extends ChangeNotifier {
       final results = await Future.wait([
         getProfile.execute(),
         pinApi.status(),
-        subscriptionApi.getPlan(),
+        getMySubscription.execute(),
         prefs.getBool(_hideInSwitcherKey),
         prefs.getBool(_remindersKey),
       ]);
       profile = results[0] as UserProfile;
       hasPin = results[1] as bool;
-      plan = results[2] as String;
+      plan = (results[2] as CurrentSubscription).plan;
       hideInSwitcher = (results[3] as bool?) ?? false;
       habitReminders = (results[4] as bool?) ?? true;
     } catch (_) {
@@ -125,13 +126,15 @@ class SettingsViewModel extends ChangeNotifier {
 
   Future<void> logOut() => authRepository.signOut();
 
-  /// Re-fetches the profile after returning from the edit screen.
+  /// Re-fetches the profile and plan after returning from Profile or Plans.
   Future<void> refreshAfterProfileEdit() async {
     try {
-      profile = await getProfile.execute();
+      final results = await Future.wait([getProfile.execute(), getMySubscription.execute()]);
+      profile = results[0] as UserProfile;
+      plan = (results[1] as CurrentSubscription).plan;
       notifyListeners();
     } catch (_) {
-      // Keep the previously loaded profile if this fails.
+      // Keep the previously loaded values if this fails.
     }
   }
 }

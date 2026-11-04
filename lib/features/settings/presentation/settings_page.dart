@@ -6,6 +6,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/coming_soon_page.dart';
 import '../../auth/presentation/login_page.dart';
 import '../../profile/presentation/profile_page.dart';
+import '../../subscriptions/presentation/plans_page.dart';
 import '../../terms/presentation/terms_page.dart';
 import 'pin_entry_dialog.dart';
 import 'settings_view_model.dart';
@@ -154,9 +155,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 _SectionLabel('Plan'),
                 _SettingsNavRow(
                   title: _viewModel.plan == 'premium' ? 'Premium plan' : 'Free plan',
-                  subtitle: 'Upgrade for reports, streak freeze and more',
+                  subtitle: _viewModel.plan == 'premium' ? 'Thanks for supporting MindFlow' : 'See plans',
                   onTap: () => Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => const ComingSoonPage(title: 'Plans'))),
+                      .push(MaterialPageRoute(builder: (_) => const PlansPage()))
+                      .then((_) => _viewModel.refreshAfterProfileEdit()),
                 ),
                 _SectionLabel('Help'),
                 _SettingsNavRow(
