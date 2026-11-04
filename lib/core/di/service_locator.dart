@@ -10,8 +10,17 @@ import '../../features/auth/infrastructure/auth_repository_impl.dart';
 import '../../features/auth/presentation/forgot_password_view_model.dart';
 import '../../features/auth/presentation/login_view_model.dart';
 import '../../features/auth/presentation/register_view_model.dart';
+import '../../features/habits/application/create_habit_use_case.dart';
+import '../../features/habits/application/delete_habit_use_case.dart';
+import '../../features/habits/application/get_habit_logs_use_case.dart';
+import '../../features/habits/application/get_habit_suggestions_use_case.dart';
 import '../../features/habits/application/get_habits_use_case.dart';
+import '../../features/habits/application/toggle_habit_today_use_case.dart';
+import '../../features/habits/domain/habits_repository.dart';
 import '../../features/habits/infrastructure/habits_api.dart';
+import '../../features/habits/infrastructure/habits_repository_impl.dart';
+import '../../features/habits/presentation/habit_suggestions_view_model.dart';
+import '../../features/habits/presentation/habits_view_model.dart';
 import '../../features/journal/application/create_journal_entry_use_case.dart';
 import '../../features/journal/application/delete_journal_entry_use_case.dart';
 import '../../features/journal/application/get_journal_entries_use_case.dart';
@@ -71,8 +80,31 @@ void setupDependencies() {
 
   // Habits
   getIt.registerLazySingleton<HabitsApi>(() => HabitsApi(client: getIt<ApiClient>()));
+  getIt.registerLazySingleton<HabitsRepository>(
+      () => HabitsRepositoryImpl(api: getIt<HabitsApi>()));
   getIt.registerLazySingleton<GetHabitsUseCase>(
-      () => GetHabitsUseCase(api: getIt<HabitsApi>()));
+      () => GetHabitsUseCase(repository: getIt<HabitsRepository>()));
+  getIt.registerLazySingleton<CreateHabitUseCase>(
+      () => CreateHabitUseCase(repository: getIt<HabitsRepository>()));
+  getIt.registerLazySingleton<DeleteHabitUseCase>(
+      () => DeleteHabitUseCase(repository: getIt<HabitsRepository>()));
+  getIt.registerLazySingleton<GetHabitLogsUseCase>(
+      () => GetHabitLogsUseCase(repository: getIt<HabitsRepository>()));
+  getIt.registerLazySingleton<ToggleHabitTodayUseCase>(
+      () => ToggleHabitTodayUseCase(repository: getIt<HabitsRepository>()));
+  getIt.registerLazySingleton<GetHabitSuggestionsUseCase>(
+      () => GetHabitSuggestionsUseCase(repository: getIt<HabitsRepository>()));
+  getIt.registerFactory<HabitsViewModel>(() => HabitsViewModel(
+        getHabits: getIt<GetHabitsUseCase>(),
+        getLogs: getIt<GetHabitLogsUseCase>(),
+        createHabit: getIt<CreateHabitUseCase>(),
+        deleteHabit: getIt<DeleteHabitUseCase>(),
+        toggleToday: getIt<ToggleHabitTodayUseCase>(),
+      ));
+  getIt.registerFactory<HabitSuggestionsViewModel>(() => HabitSuggestionsViewModel(
+        getSuggestions: getIt<GetHabitSuggestionsUseCase>(),
+        createHabit: getIt<CreateHabitUseCase>(),
+      ));
 
   // Journal
   getIt.registerLazySingleton<JournalApi>(() => JournalApi(client: getIt<ApiClient>()));
