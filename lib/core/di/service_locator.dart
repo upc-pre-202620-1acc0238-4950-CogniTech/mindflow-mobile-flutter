@@ -1,5 +1,10 @@
 import 'package:get_it/get_it.dart';
 
+import '../../features/ai_feedback/application/get_ai_feedback_summary_use_case.dart';
+import '../../features/ai_feedback/application/get_my_ai_feedback_use_case.dart';
+import '../../features/ai_feedback/application/submit_ai_feedback_use_case.dart';
+import '../../features/ai_feedback/infrastructure/ai_feedback_api.dart';
+import '../../features/ai_feedback/presentation/ai_feedback_history_view_model.dart';
 import '../../features/auth/application/forgot_password_use_case.dart';
 import '../../features/auth/application/google_auth_use_case.dart';
 import '../../features/auth/application/sign_in_use_case.dart';
@@ -86,6 +91,19 @@ import '../theme/theme_controller.dart';
 final getIt = GetIt.instance;
 
 void setupDependencies() {
+  // AI feedback
+  getIt.registerLazySingleton<AiFeedbackApi>(() => AiFeedbackApi(client: getIt<ApiClient>()));
+  getIt.registerLazySingleton<SubmitAiFeedbackUseCase>(
+      () => SubmitAiFeedbackUseCase(api: getIt<AiFeedbackApi>()));
+  getIt.registerLazySingleton<GetMyAiFeedbackUseCase>(
+      () => GetMyAiFeedbackUseCase(api: getIt<AiFeedbackApi>()));
+  getIt.registerLazySingleton<GetAiFeedbackSummaryUseCase>(
+      () => GetAiFeedbackSummaryUseCase(api: getIt<AiFeedbackApi>()));
+  getIt.registerFactory<AiFeedbackHistoryViewModel>(() => AiFeedbackHistoryViewModel(
+        getMyFeedback: getIt<GetMyAiFeedbackUseCase>(),
+        getSummary: getIt<GetAiFeedbackSummaryUseCase>(),
+      ));
+
   // Core
   getIt.registerLazySingleton<AppDatabase>(() => AppDatabase());
   getIt.registerLazySingleton<TokenStorage>(() => TokenStorage());
@@ -237,6 +255,7 @@ void setupDependencies() {
         createHabit: getIt<CreateHabitUseCase>(),
         deleteHabit: getIt<DeleteHabitUseCase>(),
         toggleToday: getIt<ToggleHabitTodayUseCase>(),
+        submitAiFeedback: getIt<SubmitAiFeedbackUseCase>(),
       ));
   getIt.registerFactory<HabitSuggestionsViewModel>(() => HabitSuggestionsViewModel(
         getSuggestions: getIt<GetHabitSuggestionsUseCase>(),
@@ -267,6 +286,7 @@ void setupDependencies() {
         getEntry: getIt<GetJournalEntryUseCase>(),
         updateEntry: getIt<UpdateJournalEntryUseCase>(),
         deleteEntry: getIt<DeleteJournalEntryUseCase>(),
+        submitAiFeedback: getIt<SubmitAiFeedbackUseCase>(),
       ));
 
   // Insights

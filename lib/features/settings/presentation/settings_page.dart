@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/di/service_locator.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../ai_feedback/presentation/ai_feedback_history_page.dart';
 import '../../auth/presentation/login_page.dart';
 import '../../profile/presentation/profile_page.dart';
 import '../../subscriptions/presentation/plans_page.dart';
@@ -172,6 +173,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   subtitle: 'Send a ticket or read common questions',
                   onTap: () => Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => const SupportPage())),
+                ),
+                _SettingsNavRow(
+                  title: 'AI feedback',
+                  subtitle: 'Your ratings of MindFlow AI\'s replies and decisions',
+                  onTap: () => Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => const AiFeedbackHistoryPage())),
                 ),
                 _SettingsNavRow(
                   title: 'Terms and privacy',

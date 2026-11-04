@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../ai_feedback/presentation/ai_rating_stars.dart';
 import '../domain/habit.dart';
 import 'habits_view_model.dart';
 
@@ -200,6 +201,9 @@ class RoutinesView extends StatelessWidget {
                 done: viewModel.todayLogFor(habit) != null,
                 onToggle: () => viewModel.toggleHabit(habit),
                 onLongPress: () => _confirmDelete(context, habit),
+                myRating: viewModel.aiPauseRatings[habit.id],
+                isSubmittingRating: viewModel.submittingRatingForHabitId == habit.id,
+                onRate: (rating) => viewModel.rateAiPause(habit, rating),
               ),
         ],
       ),
@@ -229,12 +233,18 @@ class _HabitRow extends StatelessWidget {
   final bool done;
   final VoidCallback onToggle;
   final VoidCallback onLongPress;
+  final int? myRating;
+  final bool isSubmittingRating;
+  final ValueChanged<int> onRate;
 
   const _HabitRow({
     required this.habit,
     required this.done,
     required this.onToggle,
     required this.onLongPress,
+    required this.myRating,
+    required this.isSubmittingRating,
+    required this.onRate,
   });
 
   @override
@@ -242,49 +252,66 @@ class _HabitRow extends StatelessWidget {
     final colors = context.colors;
     final paused = habit.pausedByAi;
 
-    return InkWell(
-      onTap: paused ? null : onToggle,
-      onLongPress: onLongPress,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(border: Border(bottom: BorderSide(color: colors.border))),
-        child: Row(
-          children: [
-            Container(
-              width: 28,
-              height: 28,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: done ? colors.success : Colors.transparent,
-                border: Border.all(
-                  color: paused ? colors.textSecondary : (done ? colors.success : colors.inputBorder),
-                  width: 2,
-                  style: BorderStyle.solid,
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: colors.border))),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            onTap: paused ? null : onToggle,
+            onLongPress: onLongPress,
+            child: Row(
+              children: [
+                Container(
+                  width: 28,
+                  height: 28,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: done ? colors.success : Colors.transparent,
+                    border: Border.all(
+                      color: paused ? colors.textSecondary : (done ? colors.success : colors.inputBorder),
+                      width: 2,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                  child: done ? const Icon(Icons.check, size: 16, color: Colors.white) : null,
                 ),
-              ),
-              child: done ? const Icon(Icons.check, size: 16, color: Colors.white) : null,
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(habit.name,
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: paused ? colors.textSecondary : colors.text)),
+                      Text('${habit.category} · ${habit.frequency}',
+                          style: TextStyle(fontSize: 13, color: colors.textSecondary)),
+                    ],
+                  ),
+                ),
+                Text(
+                  paused ? 'Paused by AI' : '${habit.streak} days',
+                  style: TextStyle(fontSize: 13, color: colors.textSecondary),
+                ),
+              ],
             ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(habit.name,
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: paused ? colors.textSecondary : colors.text)),
-                  Text('${habit.category} · ${habit.frequency}',
-                      style: TextStyle(fontSize: 13, color: colors.textSecondary)),
-                ],
+          ),
+          if (paused) ...[
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.only(left: 42),
+              child: AiRatingStars(
+                prompt: 'Was pausing this helpful?',
+                submittedRating: myRating,
+                isSubmitting: isSubmittingRating,
+                onRate: onRate,
               ),
-            ),
-            Text(
-              paused ? 'Paused by AI' : '${habit.streak} days',
-              style: TextStyle(fontSize: 13, color: colors.textSecondary),
             ),
           ],
-        ),
+        ],
       ),
     );
   }
