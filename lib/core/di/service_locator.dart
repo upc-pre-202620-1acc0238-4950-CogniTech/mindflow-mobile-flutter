@@ -10,6 +10,14 @@ import '../../features/auth/infrastructure/auth_repository_impl.dart';
 import '../../features/auth/presentation/forgot_password_view_model.dart';
 import '../../features/auth/presentation/login_view_model.dart';
 import '../../features/auth/presentation/register_view_model.dart';
+import '../../features/chat/application/get_conversation_messages_use_case.dart';
+import '../../features/chat/application/get_conversations_use_case.dart';
+import '../../features/chat/application/send_message_use_case.dart';
+import '../../features/chat/application/start_conversation_use_case.dart';
+import '../../features/chat/domain/chat_repository.dart';
+import '../../features/chat/infrastructure/chat_api.dart';
+import '../../features/chat/infrastructure/chat_repository_impl.dart';
+import '../../features/chat/presentation/chat_view_model.dart';
 import '../../features/habits/application/create_habit_use_case.dart';
 import '../../features/habits/application/delete_habit_use_case.dart';
 import '../../features/habits/application/get_habit_logs_use_case.dart';
@@ -77,6 +85,24 @@ void setupDependencies() {
   getIt.registerLazySingleton<ProfileApi>(() => ProfileApi(client: getIt<ApiClient>()));
   getIt.registerLazySingleton<GetProfileUseCase>(
       () => GetProfileUseCase(api: getIt<ProfileApi>()));
+
+  // Chat
+  getIt.registerLazySingleton<ChatApi>(() => ChatApi(client: getIt<ApiClient>()));
+  getIt.registerLazySingleton<ChatRepository>(() => ChatRepositoryImpl(api: getIt<ChatApi>()));
+  getIt.registerLazySingleton<GetConversationsUseCase>(
+      () => GetConversationsUseCase(repository: getIt<ChatRepository>()));
+  getIt.registerLazySingleton<GetConversationMessagesUseCase>(
+      () => GetConversationMessagesUseCase(repository: getIt<ChatRepository>()));
+  getIt.registerLazySingleton<StartConversationUseCase>(
+      () => StartConversationUseCase(repository: getIt<ChatRepository>()));
+  getIt.registerLazySingleton<SendMessageUseCase>(
+      () => SendMessageUseCase(repository: getIt<ChatRepository>()));
+  getIt.registerFactory<ChatViewModel>(() => ChatViewModel(
+        getConversations: getIt<GetConversationsUseCase>(),
+        getMessages: getIt<GetConversationMessagesUseCase>(),
+        startConversation: getIt<StartConversationUseCase>(),
+        sendMessage: getIt<SendMessageUseCase>(),
+      ));
 
   // Habits
   getIt.registerLazySingleton<HabitsApi>(() => HabitsApi(client: getIt<ApiClient>()));

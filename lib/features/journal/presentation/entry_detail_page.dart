@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/di/service_locator.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../chat/presentation/chat_page.dart';
 import '../../pause/presentation/breathing_pause_page.dart';
 import 'entry_detail_view_model.dart';
 import 'new_entry_view_model.dart';
@@ -216,8 +217,8 @@ class _EntryDetailPageState extends State<EntryDetailPage> {
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Chat is coming in the next update.'))),
+                      onPressed: () => Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => const ChatPage())),
                       child: const Text('Talk about this entry'),
                     ),
                     const SizedBox(height: 8),

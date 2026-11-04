@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/di/service_locator.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../chat/presentation/chat_page.dart';
 import 'new_entry_view_model.dart';
 
 class NewEntryPage extends StatefulWidget {
@@ -121,10 +122,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             children: [
                               Expanded(
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                        content: Text('Chat is coming in the next update.')));
-                                  },
+                                  onPressed: () => Navigator.of(context)
+                                      .push(MaterialPageRoute(builder: (_) => const ChatPage())),
                                   child: const Text('Talk about it'),
                                 ),
                               ),

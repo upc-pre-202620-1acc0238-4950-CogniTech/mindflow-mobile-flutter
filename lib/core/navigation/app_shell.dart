@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../features/chat/presentation/chat_page.dart';
 import '../../features/habits/presentation/habits_page.dart';
 import '../../features/journal/presentation/journal_list_page.dart';
 import '../../features/today/presentation/today_page.dart';
@@ -35,10 +36,7 @@ class _AppShellState extends State<AppShell> {
     return Scaffold(
       body: IndexedStack(index: _index, children: _pages),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('Chat is coming in the next update.')));
-        },
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ChatPage())),
         backgroundColor: colors.primary,
         icon: const Icon(Icons.chat_bubble_outline, color: Colors.white),
         label: const Text('Talk', style: TextStyle(color: Colors.white)),
