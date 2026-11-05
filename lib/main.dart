@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 import 'core/di/service_locator.dart';
 import 'core/l10n/locale_controller.dart';
@@ -9,8 +11,13 @@ import 'features/auth/domain/auth_repository.dart';
 import 'features/auth/presentation/login_page.dart';
 import 'l10n/app_localizations.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // MindFlow's primary language is Spanish, so every DateFormat call
+  // without an explicit locale (most of the app) renders day/month names
+  // in Spanish by default.
+  await initializeDateFormatting('es');
+  Intl.defaultLocale = 'es';
   setupDependencies();
   runApp(const MindFlowApp());
 }

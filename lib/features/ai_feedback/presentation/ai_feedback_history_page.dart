@@ -27,8 +27,8 @@ class _AiFeedbackHistoryPageState extends State<AiFeedbackHistoryPage> {
   }
 
   String _label(String contentType) => switch (contentType) {
-        'journal' => 'Journal AI reply',
-        'habit' => 'AI-paused habit',
+        'journal' => 'Respuesta de IA en Diario',
+        'habit' => 'Hábito pausado por IA',
         _ => contentType,
       };
 
@@ -37,7 +37,7 @@ class _AiFeedbackHistoryPageState extends State<AiFeedbackHistoryPage> {
     final colors = context.colors;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('AI feedback')),
+      appBar: AppBar(title: const Text('Comentarios sobre la IA')),
       body: SafeArea(
         child: ListenableBuilder(
           listenable: _viewModel,
@@ -62,7 +62,7 @@ class _AiFeedbackHistoryPageState extends State<AiFeedbackHistoryPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Your ratings', style: TextStyle(fontSize: 13, color: colors.textSecondary)),
+                        Text('Tus calificaciones', style: TextStyle(fontSize: 13, color: colors.textSecondary)),
                         const SizedBox(height: 6),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -72,7 +72,7 @@ class _AiFeedbackHistoryPageState extends State<AiFeedbackHistoryPage> {
                             const SizedBox(width: 8),
                             Padding(
                               padding: const EdgeInsets.only(bottom: 6),
-                              child: Text('/ 5 · ${summary.totalRatings} rating(s)',
+                              child: Text('/ 5 · ${summary.totalRatings} calificación(es)',
                                   style: TextStyle(fontSize: 14, color: colors.textSecondary)),
                             ),
                           ],
@@ -89,12 +89,12 @@ class _AiFeedbackHistoryPageState extends State<AiFeedbackHistoryPage> {
                     ),
                   ),
                   const SizedBox(height: 22),
-                  Text('History', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Text('Historial', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   if (_viewModel.ratings.isEmpty)
                     Padding(
                       padding: const EdgeInsets.only(top: 12),
-                      child: Text('You have not rated any AI content yet.',
+                      child: Text('Aún no has calificado ningún contenido de la IA.',
                           style: TextStyle(color: colors.textSecondary)),
                     )
                   else

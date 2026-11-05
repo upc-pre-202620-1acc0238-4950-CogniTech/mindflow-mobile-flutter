@@ -27,7 +27,7 @@ class AiFeedbackHistoryViewModel extends ChangeNotifier {
       ratings = results[0] as List<AiFeedbackRating>;
       summary = results[1] as AiFeedbackSummary;
     } catch (_) {
-      errorMessage = 'Could not load your AI feedback history.';
+      errorMessage = 'No se pudo cargar tu historial de comentarios sobre la IA.';
     } finally {
       isLoading = false;
       notifyListeners();

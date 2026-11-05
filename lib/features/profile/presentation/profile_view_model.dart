@@ -30,7 +30,7 @@ class ProfileViewModel extends ChangeNotifier {
     try {
       profile = await getProfile.execute();
     } catch (_) {
-      errorMessage = 'Could not load your profile.';
+      errorMessage = 'No se pudo cargar tu perfil.';
     } finally {
       isLoading = false;
       notifyListeners();

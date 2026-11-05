@@ -6,6 +6,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../ai_feedback/presentation/ai_rating_stars.dart';
 import '../../chat/presentation/chat_page.dart';
 import '../../wellness/presentation/wellness_exercises_page.dart';
+import '../domain/journal_entry.dart';
 import 'entry_detail_view_model.dart';
 import 'new_entry_view_model.dart';
 
@@ -53,14 +54,14 @@ class _EntryDetailPageState extends State<EntryDetailPage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete this entry?'),
-        content: const Text('This cannot be undone.'),
+        title: const Text('¿Eliminar esta entrada?'),
+        content: const Text('Esto no se puede deshacer.'),
         actions: [
           TextButton(
-              onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel')),
+              onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
           TextButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Delete', style: TextStyle(color: Colors.red))),
+              child: const Text('Eliminar', style: TextStyle(color: Colors.red))),
         ],
       ),
     );
@@ -112,7 +113,7 @@ class _EntryDetailPageState extends State<EntryDetailPage> {
             final entry = _viewModel.entry;
             if (entry == null) {
               return Center(
-                  child: Text(_viewModel.errorMessage ?? 'Entry not found.',
+                  child: Text(_viewModel.errorMessage ?? 'No se encontró la entrada.',
                       style: TextStyle(color: colors.crisisText)));
             }
 
@@ -134,7 +135,7 @@ class _EntryDetailPageState extends State<EntryDetailPage> {
                       decoration: const InputDecoration(border: InputBorder.none, isDense: true),
                     )
                   else
-                    Text(entry.title.isEmpty ? '(No title)' : entry.title,
+                    Text(entry.title.isEmpty ? '(Sin título)' : entry.title,
                         style: const TextStyle(
                             fontSize: 26, fontWeight: FontWeight.w600, letterSpacing: -0.01)),
                   const SizedBox(height: 10),
@@ -156,7 +157,9 @@ class _EntryDetailPageState extends State<EntryDetailPage> {
                       spacing: 8,
                       children: [
                         _Pill(text: entry.category),
-                        _Pill(text: entry.sentiment, dotColor: _sentimentColor(entry.sentiment, colors)),
+                        _Pill(
+                            text: entry.sentimentLabel,
+                            dotColor: _sentimentColor(entry.sentiment, colors)),
                       ],
                     ),
                   const SizedBox(height: 16),
@@ -192,7 +195,7 @@ class _EntryDetailPageState extends State<EntryDetailPage> {
                               height: 20,
                               child:
                                   CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                          : const Text('Save changes'),
+                          : const Text('Guardar cambios'),
                     ),
                   ],
                   if (!_editing && entry.aiResponse != null) ...[
@@ -215,7 +218,7 @@ class _EntryDetailPageState extends State<EntryDetailPage> {
                           Text(entry.aiResponse!, style: const TextStyle(fontSize: 16, height: 1.5)),
                           const SizedBox(height: 10),
                           AiRatingStars(
-                            prompt: 'Was this reply helpful?',
+                            prompt: '¿Te fue útil esta respuesta?',
                             submittedRating: _viewModel.myAiRating,
                             isSubmitting: _viewModel.isSubmittingAiRating,
                             onRate: _viewModel.rateAiResponse,
@@ -227,7 +230,7 @@ class _EntryDetailPageState extends State<EntryDetailPage> {
                     ElevatedButton(
                       onPressed: () => Navigator.of(context)
                           .push(MaterialPageRoute(builder: (_) => const ChatPage())),
-                      child: const Text('Talk about this entry'),
+                      child: const Text('Hablarlo'),
                     ),
                     const SizedBox(height: 8),
                     OutlinedButton(
@@ -238,7 +241,7 @@ class _EntryDetailPageState extends State<EntryDetailPage> {
                         foregroundColor: colors.text,
                         side: const BorderSide(color: Color(0xFFB8C0CF)),
                       ),
-                      child: const Text('Start a guided pause'),
+                      child: const Text('Iniciar una pausa guiada'),
                     ),
                   ],
                 ],

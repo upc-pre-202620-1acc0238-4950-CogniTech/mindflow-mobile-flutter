@@ -22,7 +22,7 @@ class TicketDetailViewModel extends ChangeNotifier {
       ticket = await getTicket.execute(id);
       errorMessage = null;
     } catch (_) {
-      errorMessage = 'Could not load this ticket.';
+      errorMessage = 'No se pudo cargar este ticket.';
     } finally {
       isLoading = false;
       notifyListeners();
@@ -37,7 +37,7 @@ class TicketDetailViewModel extends ChangeNotifier {
       await sendMessage.execute(ticketId: ticket!.id, message: message.trim());
       ticket = await getTicket.execute(ticket!.id);
     } catch (_) {
-      errorMessage = 'Could not send your reply.';
+      errorMessage = 'No se pudo enviar tu respuesta.';
     } finally {
       isSending = false;
       notifyListeners();

@@ -39,7 +39,7 @@ class _WellnessExercisesPageState extends State<WellnessExercisesPage> {
     final colors = context.colors;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Quick pauses')),
+      appBar: AppBar(title: const Text('Pausas rápidas')),
       body: SafeArea(
         child: ListenableBuilder(
           listenable: _viewModel,
@@ -57,13 +57,13 @@ class _WellnessExercisesPageState extends State<WellnessExercisesPage> {
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
                 children: [
                   if (_viewModel.breathing.isNotEmpty) ...[
-                    Text('Breathing', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: colors.textSecondary)),
+                    Text('Respiración', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: colors.textSecondary)),
                     const SizedBox(height: 8),
                     for (final e in _viewModel.breathing) _ExerciseTile(exercise: e, onTap: () => _open(e)),
                     const SizedBox(height: 16),
                   ],
                   if (_viewModel.meditation.isNotEmpty) ...[
-                    Text('Meditation', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: colors.textSecondary)),
+                    Text('Meditación', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: colors.textSecondary)),
                     const SizedBox(height: 8),
                     for (final e in _viewModel.meditation) _ExerciseTile(exercise: e, onTap: () => _open(e)),
                   ],

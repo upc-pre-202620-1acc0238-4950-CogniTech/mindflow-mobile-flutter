@@ -24,15 +24,15 @@ class _SupportPageState extends State<SupportPage> {
   int? _openFaq;
 
   static const _faq = [
-    ('Are my entries private?',
-        'Yes. Your entries are stored encrypted and only you can see them.'),
-    ('How does MindFlow AI work?',
-        'It reads the tone of what you write to give an empathetic reply and wellbeing suggestions.'),
-    ('Why were my habits paused?',
-        'When the AI detects high stress, it pauses demanding tasks so you can prioritize rest.'),
-    ('What does Premium include?',
-        'Today, Freemium and Premium unlock the same features — Premium is what keeps the project '
-            'funded as more premium-only features ship.'),
+    ('¿Mis entradas son privadas?',
+        'Sí. Tus entradas se guardan encriptadas y solo tú puedes verlas.'),
+    ('¿Cómo funciona MindFlow AI?',
+        'Lee el tono de lo que escribes para dar una respuesta empática y sugerencias de bienestar.'),
+    ('¿Por qué se pausaron mis hábitos?',
+        'Cuando la IA detecta estrés alto, pausa tareas demandantes para que priorices el descanso.'),
+    ('¿Qué incluye Premium?',
+        'Por ahora, Freemium y Premium desbloquean las mismas funciones — Premium es lo que mantiene '
+            'financiado el proyecto a medida que se lancen más funciones exclusivas.'),
   ];
 
   @override
@@ -57,7 +57,7 @@ class _SupportPageState extends State<SupportPage> {
     final colors = context.colors;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Support')),
+      appBar: AppBar(title: const Text('Soporte')),
       body: SafeArea(
         child: ListenableBuilder(
           listenable: _viewModel,
@@ -79,30 +79,30 @@ class _SupportPageState extends State<SupportPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Need to talk to someone now?',
+                        Text('¿Necesitas hablar con alguien ahora?',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w600, color: colors.crisisText)),
                         const SizedBox(height: 6),
                         const Text(
-                            'In Peru, Línea 113, option 5, offers free psychological support, 24 hours a day.',
+                            'En Perú, la Línea 113, opción 5, ofrece apoyo psicológico gratuito las 24 horas.',
                             style: TextStyle(fontSize: 14)),
                         const SizedBox(height: 10),
                         ElevatedButton(
                           onPressed: () => launchUrl(Uri.parse('tel:113')),
                           style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(48)),
-                          child: const Text('Call 113'),
+                          child: const Text('Llamar al 113'),
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Text('Send a ticket', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  const Text('Enviar un ticket', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _controller,
                     minLines: 4,
                     maxLines: 8,
-                    decoration: const InputDecoration(hintText: 'Describe the problem you are having'),
+                    decoration: const InputDecoration(hintText: 'Describe el problema que tienes'),
                   ),
                   const SizedBox(height: 10),
                   if (_viewModel.errorMessage != null) ...[
@@ -117,7 +117,7 @@ class _SupportPageState extends State<SupportPage> {
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                        : const Text('Send ticket'),
+                        : const Text('Enviar ticket'),
                   ),
                   if (_viewModel.lastCreated != null)
                     Container(
@@ -126,17 +126,17 @@ class _SupportPageState extends State<SupportPage> {
                       decoration:
                           BoxDecoration(color: colors.tintGreen, borderRadius: BorderRadius.circular(12)),
                       child: Text(
-                          'Ticket #${_viewModel.lastCreated!.id} sent. We will contact you by email.',
+                          'Ticket #${_viewModel.lastCreated!.id} enviado. Te contactaremos por correo.',
                           style: const TextStyle(fontSize: 15)),
                     ),
                   if (_viewModel.tickets.isNotEmpty) ...[
                     const SizedBox(height: 22),
-                    Text('My tickets', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text('Mis tickets', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 8),
                     for (final t in _viewModel.tickets) _TicketRow(ticket: t),
                   ],
                   const SizedBox(height: 22),
-                  const Text('Frequently asked questions',
+                  const Text('Preguntas frecuentes',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 6),
                   for (var i = 0; i < _faq.length; i++)
@@ -177,12 +177,12 @@ class _TicketRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(ticket.subject, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
-                  Text('${ticket.messages.length} message(s)',
+                  Text('${ticket.messages.length} mensaje(s)',
                       style: TextStyle(fontSize: 13, color: colors.textSecondary)),
                 ],
               ),
             ),
-            Text(ticket.status, style: TextStyle(fontSize: 13, color: colors.primary)),
+            Text(ticket.statusLabel, style: TextStyle(fontSize: 13, color: colors.primary)),
           ],
         ),
       ),

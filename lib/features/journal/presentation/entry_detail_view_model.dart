@@ -99,7 +99,7 @@ class EntryDetailViewModel extends ChangeNotifier {
       );
       myAiRating = rating;
     } catch (_) {
-      errorMessage = 'Could not save your rating.';
+      errorMessage = 'No se pudo guardar tu calificación.';
     } finally {
       isSubmittingAiRating = false;
       notifyListeners();

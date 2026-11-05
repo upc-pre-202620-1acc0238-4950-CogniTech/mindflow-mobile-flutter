@@ -36,7 +36,7 @@ class PlansViewModel extends ChangeNotifier with WidgetsBindingObserver {
       plans = results[0] as List<SubscriptionPlan>;
       current = results[1] as CurrentSubscription;
     } catch (_) {
-      errorMessage = 'Could not load plans right now.';
+      errorMessage = 'No se pudieron cargar los planes por ahora.';
     } finally {
       isLoading = false;
       notifyListeners();
@@ -52,7 +52,7 @@ class PlansViewModel extends ChangeNotifier with WidgetsBindingObserver {
       _awaitingCheckoutReturn = true;
       await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } catch (_) {
-      errorMessage = 'Could not start checkout. Stripe test credentials may not be configured.';
+      errorMessage = 'No se pudo iniciar el pago. Puede que las credenciales de prueba de Stripe no estén configuradas.';
     } finally {
       isStartingCheckout = false;
       notifyListeners();

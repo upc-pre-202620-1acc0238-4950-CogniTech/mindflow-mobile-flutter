@@ -19,7 +19,7 @@ class InsightsViewModel extends ChangeNotifier {
     refresh();
   }
 
-  static const ranges = ['Week', 'Month'];
+  static const ranges = ['Semana', 'Mes'];
 
   bool isLoading = true;
   bool isExporting = false;
@@ -44,7 +44,7 @@ class InsightsViewModel extends ChangeNotifier {
       bestStreak =
           habits.isEmpty ? 0 : habits.map((h) => h.streak).reduce((a, b) => a > b ? a : b);
     } catch (_) {
-      errorMessage = 'Could not load your insights. Pull down to try again.';
+      errorMessage = 'No se pudo cargar tu análisis. Desliza hacia abajo para reintentar.';
     } finally {
       isLoading = false;
       notifyListeners();
@@ -64,7 +64,7 @@ class InsightsViewModel extends ChangeNotifier {
       final file = pdf ? await exportReport.executePdf() : await exportReport.executeCsv();
       return file.path;
     } catch (_) {
-      errorMessage = 'Could not export the report. Try again.';
+      errorMessage = 'No se pudo exportar el reporte. Intenta de nuevo.';
       return null;
     } finally {
       isExporting = false;

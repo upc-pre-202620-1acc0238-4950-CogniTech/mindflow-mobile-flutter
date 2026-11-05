@@ -44,7 +44,7 @@ class ApiClient {
       return jsonDecode(utf8.decode(response.bodyBytes));
     }
 
-    String message = 'Request failed (${response.statusCode}).';
+    String message = 'La solicitud falló (${response.statusCode}).';
     try {
       final body = jsonDecode(utf8.decode(response.bodyBytes));
       if (body is Map<String, dynamic>) {
@@ -101,7 +101,7 @@ class ApiClient {
     final response =
         await _client.get(_uri(path, query), headers: await _headers(auth: auth));
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw ApiException(response.statusCode, 'Request failed (${response.statusCode}).');
+      throw ApiException(response.statusCode, 'La solicitud falló (${response.statusCode}).');
     }
     return response.bodyBytes;
   }

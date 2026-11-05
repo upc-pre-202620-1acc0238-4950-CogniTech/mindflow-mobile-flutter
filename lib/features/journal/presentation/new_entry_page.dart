@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/di/service_locator.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../chat/presentation/chat_page.dart';
+import '../domain/journal_entry.dart';
 import 'new_entry_view_model.dart';
 
 class NewEntryPage extends StatefulWidget {
@@ -38,7 +39,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('New entry'),
+        title: const Text('Nueva entrada'),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -50,7 +51,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('How are you feeling right now?',
+                  Text('¿Cómo te sientes en este momento?',
                       style: TextStyle(fontSize: 15, color: colors.textSecondary)),
                   const SizedBox(height: 8),
                   TextField(
@@ -58,11 +59,11 @@ class _NewEntryPageState extends State<NewEntryPage> {
                     minLines: 6,
                     maxLines: 10,
                     decoration: const InputDecoration(
-                      hintText: 'Write here. This is a private, encrypted space.',
+                      hintText: 'Escribe aquí. Este es un espacio privado y encriptado.',
                     ),
                   ),
                   const SizedBox(height: 14),
-                  const Text('Category', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                  const Text('Categoría', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
                   const SizedBox(height: 6),
                   Wrap(
                     spacing: 8,
@@ -93,7 +94,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                        : const Text('Save entry'),
+                        : const Text('Guardar entrada'),
                   ),
                   if (_viewModel.savedEntry != null) ...[
                     const SizedBox(height: 16),
@@ -107,14 +108,14 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'MindFlow AI · sentiment: ${_viewModel.savedEntry!.sentiment}',
+                            'MindFlow AI · estado de ánimo: ${sentimentLabelEs(_viewModel.savedEntry!.sentiment)}',
                             style: TextStyle(
                                 fontSize: 13, color: colors.textSecondary, fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(height: 8),
                           Text(
                             _viewModel.savedEntry!.aiResponse ??
-                                'Thanks for writing. Take a moment for yourself.',
+                                'La IA no está disponible en este momento. Tómate un momento para ti.',
                             style: const TextStyle(fontSize: 16, height: 1.5),
                           ),
                           const SizedBox(height: 12),
@@ -124,7 +125,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                                 child: ElevatedButton(
                                   onPressed: () => Navigator.of(context)
                                       .push(MaterialPageRoute(builder: (_) => const ChatPage())),
-                                  child: const Text('Talk about it'),
+                                  child: const Text('Hablarlo'),
                                 ),
                               ),
                               const SizedBox(width: 8),
@@ -135,7 +136,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                                   foregroundColor: colors.text,
                                   side: const BorderSide(color: Color(0xFFB8C0CF)),
                                 ),
-                                child: const Text('Done'),
+                                child: const Text('Listo'),
                               ),
                             ],
                           ),

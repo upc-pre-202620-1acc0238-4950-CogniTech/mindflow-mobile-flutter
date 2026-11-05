@@ -65,7 +65,7 @@ class SettingsViewModel extends ChangeNotifier {
       hideInSwitcher = (results[3] as bool?) ?? false;
       habitReminders = (results[4] as bool?) ?? true;
     } catch (_) {
-      errorMessage = 'Could not load some settings.';
+      errorMessage = 'No se pudieron cargar algunos ajustes.';
     } finally {
       isLoading = false;
       notifyListeners();
@@ -94,7 +94,7 @@ class SettingsViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       final valid = await pinApi.verify(pin);
-      if (!valid) return 'Incorrect PIN.';
+      if (!valid) return 'PIN incorrecto.';
       await pinApi.remove();
       hasPin = false;
       return null;

@@ -20,11 +20,11 @@ class TodayViewModel extends ChangeNotifier {
   }
 
   static const moods = [
-    MoodOption('Great', 'positive'),
-    MoodOption('Good', 'positive'),
-    MoodOption('Okay', 'neutral'),
-    MoodOption('Stressed', 'negative'),
-    MoodOption('Low', 'negative'),
+    MoodOption('Genial', 'positive'),
+    MoodOption('Bien', 'positive'),
+    MoodOption('Normal', 'neutral'),
+    MoodOption('Estresado', 'negative'),
+    MoodOption('Bajo', 'negative'),
   ];
 
   bool isLoading = true;
@@ -42,7 +42,7 @@ class TodayViewModel extends ChangeNotifier {
     try {
       snapshot = await loadToday.execute();
     } catch (e) {
-      errorMessage = 'Could not load Today. Pull down to try again.';
+      errorMessage = 'No se pudo cargar Hoy. Desliza hacia abajo para reintentar.';
     } finally {
       isLoading = false;
       notifyListeners();
@@ -61,13 +61,13 @@ class TodayViewModel extends ChangeNotifier {
     try {
       final mood = moods[selectedMood!];
       checkInResult = await createEntry.execute(
-        content: 'Check-in: feeling ${mood.word.toLowerCase()}.',
-        category: 'Personal reflection',
+        content: 'Check-in: me siento ${mood.word.toLowerCase()}.',
+        category: 'Reflexión personal',
         sentiment: mood.sentiment,
       );
       await refresh();
     } catch (_) {
-      errorMessage = 'Could not save your check-in. Try again.';
+      errorMessage = 'No se pudo guardar tu check-in. Intenta de nuevo.';
     } finally {
       isCheckingIn = false;
       notifyListeners();

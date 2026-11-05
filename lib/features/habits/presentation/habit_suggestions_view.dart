@@ -23,13 +23,13 @@ class HabitSuggestionsView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.fromLTRB(0, 14, 0, 110),
         children: [
-          Text('Based on your recent entries, these routines can lower stress.',
+          Text('Según tus entradas recientes, estas rutinas pueden reducir el estrés.',
               style: TextStyle(fontSize: 15, color: colors.textSecondary)),
           const SizedBox(height: 10),
           if (viewModel.suggestions.isEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 20),
-              child: Text('No suggestions right now.', style: TextStyle(color: colors.textSecondary)),
+              child: Text('No hay sugerencias por ahora.', style: TextStyle(color: colors.textSecondary)),
             )
           else
             for (var i = 0; i < viewModel.suggestions.length; i++)
@@ -71,7 +71,7 @@ class HabitSuggestionsView extends StatelessWidget {
                               width: 16,
                               height: 16,
                               child: CircularProgressIndicator(strokeWidth: 2))
-                          : Text(viewModel.addedIndexes.contains(i) ? 'Added' : 'Add'),
+                          : Text(viewModel.addedIndexes.contains(i) ? 'Agregado' : 'Agregar'),
                     ),
                   ],
                 ),
@@ -79,7 +79,7 @@ class HabitSuggestionsView extends StatelessWidget {
           if (viewModel.allAdded)
             Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: Text('You added every available suggestion.',
+              child: Text('Agregaste todas las sugerencias disponibles.',
                   style: TextStyle(fontSize: 14, color: colors.textSecondary)),
             ),
         ],

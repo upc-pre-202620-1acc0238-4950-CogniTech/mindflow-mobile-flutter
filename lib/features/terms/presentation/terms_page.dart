@@ -10,32 +10,32 @@ class TermsPage extends StatelessWidget {
 
   static const _sections = [
     (
-      '1. Acceptance of terms',
-      'By accessing or using MindFlow (the "App"), developed by the CogniTech team as an academic project at UPC, you agree to these Terms and Conditions. If you do not agree, do not use the App. MindFlow is a self-care and reflection tool: it does not replace care from a psychologist, psychiatrist, or other health professional, and the AI assistant does not give diagnoses or treatments. If you feel you are at risk or might harm yourself, seek help immediately: Line 113, option 5 (mental health, Peru\'s Ministry of Health) or 106 (SAMU).'
+      '1. Aceptación de los términos',
+      'Al acceder o usar MindFlow (la "App"), desarrollada por el equipo CogniTech como proyecto académico en la UPC, aceptas estos Términos y Condiciones. Si no estás de acuerdo, no uses la App. MindFlow es una herramienta de autocuidado y reflexión: no reemplaza la atención de un psicólogo, psiquiatra u otro profesional de salud, y el asistente de IA no da diagnósticos ni tratamientos. Si sientes que estás en riesgo o podrías lastimarte, busca ayuda de inmediato: Línea 113, opción 5 (salud mental, Minsa) o 106 (SAMU).'
     ),
     (
-      '2. Eligibility and accounts',
-      'You must be 18 years or older and have the legal capacity to accept these terms. You can sign up with your email and password or with your Google account. You are responsible for keeping your login credentials secure and for all activity under your account; the information you provide when registering must be accurate. You can delete your account from the app: this removes your journal, habits, and AI conversations, though some payment or support records may be kept for legal or accounting obligations.'
+      '2. Elegibilidad y cuentas',
+      'Debes tener 18 años o más y capacidad legal para aceptar estos términos. Puedes registrarte con tu correo y contraseña o con tu cuenta de Google. Eres responsable de mantener seguras tus credenciales de acceso y de toda actividad en tu cuenta; la información que proporciones al registrarte debe ser exacta. Puedes eliminar tu cuenta desde la app: esto elimina tu diario, hábitos y conversaciones con la IA, aunque algunos registros de pago o soporte pueden conservarse por obligaciones legales o contables.'
     ),
     (
-      '3. Use of the App',
-      'You may use MindFlow for lawful personal purposes only. You must not attempt unauthorized access to other users\' data, compromise the App\'s security, or use the AI assistant to obtain content that promotes harm to yourself or others. AI-generated insights (via the Google Gemini API) are informational, may contain errors, and are not a clinical diagnosis.'
+      '3. Uso de la App',
+      'Puedes usar MindFlow solo para fines personales lícitos. No debes intentar acceder sin autorización a los datos de otros usuarios, comprometer la seguridad de la App, ni usar el asistente de IA para obtener contenido que promueva hacerte daño a ti mismo o a otros. Los análisis generados por IA (mediante la API de Google Gemini) son informativos, pueden contener errores y no constituyen un diagnóstico clínico.'
     ),
     (
-      '4. Subscriptions and payments',
-      'Freemium is free, with the basic journal, habit, and assistant features. Premium costs USD 4.99 per month (plus taxes depending on your country), is charged through Stripe — MindFlow does not store your card details — and renews every month until you cancel by writing to cognitech.mindflow@gmail.com; the subscription stays active until the end of the period already paid. Periods already started are not refunded, except where the law requires it or the charge was our mistake.'
+      '4. Suscripciones y pagos',
+      'Freemium es gratuito, con las funciones básicas de diario, hábitos y asistente. Premium cuesta USD 4.99 al mes (más impuestos según tu país), se cobra a través de Stripe — MindFlow no almacena los datos de tu tarjeta — y se renueva cada mes hasta que canceles escribiendo a cognitech.mindflow@gmail.com; la suscripción permanece activa hasta el final del periodo ya pagado. Los periodos ya iniciados no se reembolsan, salvo que la ley lo exija o el cargo haya sido un error nuestro.'
     ),
     (
-      '5. Privacy and data',
-      'The content of your journal entries and your conversations with the assistant is stored encrypted with AES-256. We do not sell your data or use it for advertising, and we do not use the content of your entries or conversations to train our own or third-party models. Export features are provided for your personal use and for sharing with professionals you choose; you are responsible for how you share exported data.'
+      '5. Privacidad y datos',
+      'El contenido de tus entradas de diario y de tus conversaciones con el asistente se almacena encriptado con AES-256. No vendemos tus datos ni los usamos para publicidad, y no usamos el contenido de tus entradas o conversaciones para entrenar nuestros modelos ni los de terceros. Las funciones de exportación se brindan para tu uso personal y para compartir con los profesionales que elijas; eres responsable de cómo compartes los datos exportados.'
     ),
     (
-      '6. Limitation of liability',
-      'MindFlow is provided "as is": it is developed in an academic context and may have interruptions, errors, or changes. We do not guarantee that it will always be available or that AI responses will be accurate or suitable for your situation. To the extent permitted by law, we are not liable for indirect damages arising from use of the App or for decisions you make based on AI responses.'
+      '6. Limitación de responsabilidad',
+      'MindFlow se ofrece "tal cual": se desarrolla en un contexto académico y puede tener interrupciones, errores o cambios. No garantizamos que esté siempre disponible ni que las respuestas de la IA sean precisas o adecuadas para tu situación. En la medida permitida por la ley, no somos responsables de daños indirectos derivados del uso de la App o de decisiones que tomes basándote en las respuestas de la IA.'
     ),
     (
-      '7. Changes and contact',
-      'We may update these Terms. If the change is significant, we will notify you in the app or on the site before it takes effect; continued use afterward means you accept the change. For questions: cognitech.mindflow@gmail.com.'
+      '7. Cambios y contacto',
+      'Podemos actualizar estos Términos. Si el cambio es significativo, te notificaremos en la app o en el sitio antes de que entre en vigor; el uso continuado después de eso implica que aceptas el cambio. Para preguntas: cognitech.mindflow@gmail.com.'
     ),
   ];
 
@@ -45,14 +45,14 @@ class TermsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Terms and Conditions'),
+        title: const Text('Términos y Condiciones'),
         leading: BackButton(onPressed: () => Navigator.of(context).pop()),
       ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
           children: [
-            Text('Last updated: October 2026',
+            Text('Última actualización: octubre 2026',
                 style: TextStyle(fontSize: 13, color: colors.textSecondary)),
             const SizedBox(height: 16),
             for (final (title, body) in _sections) ...[

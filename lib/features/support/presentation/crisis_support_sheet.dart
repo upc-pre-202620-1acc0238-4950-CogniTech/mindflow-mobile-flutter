@@ -23,24 +23,24 @@ class CrisisSupportSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Talk to someone now',
+          const Text('Habla con alguien ahora',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
           const SizedBox(height: 14),
           const Text(
-            'If you feel unsafe or think you may hurt yourself, please reach out to a person. '
-            'In Peru, Línea 113, option 5, offers free psychological support, 24 hours a day.',
+            'Si te sientes inseguro o piensas que podrías lastimarte, por favor busca a una persona. '
+            'En Perú, la Línea 113, opción 5, ofrece apoyo psicológico gratuito las 24 horas.',
             style: TextStyle(fontSize: 16, height: 1.5),
           ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => launchUrl(Uri.parse('tel:113')),
             style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52)),
-            child: const Text('Call 113'),
+            child: const Text('Llamar al 113'),
           ),
           const SizedBox(height: 8),
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Back to chat'),
+            child: const Text('Volver al chat'),
           ),
         ],
       ),

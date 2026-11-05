@@ -29,7 +29,7 @@ class AiRatingStars extends StatelessWidget {
           for (var i = 1; i <= 5; i++)
             Icon(i <= submittedRating! ? Icons.star : Icons.star_border, size: 20, color: colors.primary),
           const SizedBox(width: 8),
-          Text('Thanks for your feedback', style: TextStyle(fontSize: 13, color: colors.textSecondary)),
+          Text('Gracias por tu comentario', style: TextStyle(fontSize: 13, color: colors.textSecondary)),
         ],
       );
     }

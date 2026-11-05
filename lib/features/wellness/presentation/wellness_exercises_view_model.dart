@@ -25,7 +25,7 @@ class WellnessExercisesViewModel extends ChangeNotifier {
     try {
       exercises = await getExercises.execute();
     } catch (_) {
-      errorMessage = 'Could not load the exercise library.';
+      errorMessage = 'No se pudo cargar la biblioteca de ejercicios.';
     } finally {
       isLoading = false;
       notifyListeners();

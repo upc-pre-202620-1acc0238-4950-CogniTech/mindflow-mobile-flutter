@@ -25,7 +25,7 @@ class SupportViewModel extends ChangeNotifier {
       tickets = await getTickets.execute();
       errorMessage = null;
     } catch (_) {
-      errorMessage = 'Could not load your tickets.';
+      errorMessage = 'No se pudieron cargar tus tickets.';
     } finally {
       isLoading = false;
       notifyListeners();
@@ -45,7 +45,7 @@ class SupportViewModel extends ChangeNotifier {
       await refresh();
       return true;
     } catch (_) {
-      errorMessage = 'Could not send your ticket. Try again.';
+      errorMessage = 'No se pudo enviar tu ticket. Intenta de nuevo.';
       return false;
     } finally {
       isSending = false;

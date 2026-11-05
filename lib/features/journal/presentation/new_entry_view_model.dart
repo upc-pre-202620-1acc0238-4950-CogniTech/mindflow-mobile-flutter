@@ -8,7 +8,7 @@ class NewEntryViewModel extends ChangeNotifier {
   final CreateJournalEntryUseCase createEntry;
   NewEntryViewModel({required this.createEntry});
 
-  static const categories = ['Work', 'Family', 'Personal reflection', 'Health', 'Learning'];
+  static const categories = ['Trabajo', 'Familia', 'Reflexión personal', 'Salud', 'Aprendizaje'];
 
   int selectedCategory = 0;
   bool isLoading = false;

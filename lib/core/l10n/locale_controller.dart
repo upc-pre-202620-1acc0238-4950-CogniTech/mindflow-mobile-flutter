@@ -10,8 +10,9 @@ class LocaleController extends ChangeNotifier {
     _load();
   }
 
-  /// Null defers to the device locale, clamped by `supportedLocales`.
-  Locale? locale;
+  /// MindFlow's main language is Spanish, so it's the default regardless of
+  /// device locale until the user picks English in Settings.
+  Locale? locale = const Locale('es');
 
   Future<void> _load() async {
     final code = await _prefs.getString(_key);

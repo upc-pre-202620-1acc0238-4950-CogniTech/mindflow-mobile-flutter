@@ -20,13 +20,14 @@ class _HabitsPageState extends State<HabitsPage> {
   late final HabitSuggestionsViewModel _suggestionsViewModel;
   int _tab = 0;
 
-  static const _tabs = ['Routines', 'AI suggestions', 'History'];
+  static const _tabs = ['Rutinas', 'Sugerencias IA', 'Historial'];
 
   @override
   void initState() {
     super.initState();
     _habitsViewModel = getIt<HabitsViewModel>();
-    _suggestionsViewModel = getIt<HabitSuggestionsViewModel>();
+    _suggestionsViewModel = getIt<HabitSuggestionsViewModel>()
+      ..onHabitAdded = _habitsViewModel.refresh;
   }
 
   @override
@@ -40,7 +41,7 @@ class _HabitsPageState extends State<HabitsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Habits',
+              const Text('Hábitos',
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600, letterSpacing: -0.01)),
               const SizedBox(height: 12),
               Row(

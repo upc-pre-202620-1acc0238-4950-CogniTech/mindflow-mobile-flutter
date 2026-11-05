@@ -29,7 +29,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifications'),
+        title: const Text('Notificaciones'),
         actions: [
           ListenableBuilder(
             listenable: _viewModel,
@@ -37,7 +37,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
               if (_viewModel.unreadCount == 0) return const SizedBox.shrink();
               return TextButton(
                 onPressed: _viewModel.markEverythingRead,
-                child: const Text('Mark all read'),
+                child: const Text('Marcar todas leídas'),
               );
             },
           ),
@@ -56,7 +56,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
             }
             if (_viewModel.notifications.isEmpty) {
               return Center(
-                  child: Text('No notifications yet.', style: TextStyle(color: colors.textSecondary)));
+                  child: Text('Aún no hay notificaciones.', style: TextStyle(color: colors.textSecondary)));
             }
             return RefreshIndicator(
               onRefresh: _viewModel.loadAll,

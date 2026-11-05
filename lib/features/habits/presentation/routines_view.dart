@@ -28,11 +28,11 @@ class RoutinesView extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('New habit', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
+                    const Text('Nuevo hábito', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 12),
                     TextField(
                       controller: nameController,
-                      decoration: const InputDecoration(hintText: 'e.g. Read 10 pages before bed'),
+                      decoration: const InputDecoration(hintText: 'Ej. Leer 10 páginas antes de dormir'),
                     ),
                     const SizedBox(height: 12),
                     Wrap(
@@ -81,11 +81,11 @@ class RoutinesView extends StatelessWidget {
                               );
                               if (ok && context.mounted) Navigator.of(context).pop();
                             },
-                      child: const Text('Add habit'),
+                      child: const Text('Agregar hábito'),
                     ),
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Cancel'),
+                      child: const Text('Cancelar'),
                     ),
                   ],
                 ),
@@ -118,7 +118,7 @@ class RoutinesView extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: () => _openAddHabit(context),
               icon: const Icon(Icons.add, size: 18),
-              label: const Text('Add habit'),
+              label: const Text('Agregar hábito'),
               style: ElevatedButton.styleFrom(minimumSize: const Size(0, 44)),
             ),
           ),
@@ -133,10 +133,10 @@ class RoutinesView extends StatelessWidget {
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Stress is above your average',
+                  Text('El estrés está por encima de tu promedio',
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                   SizedBox(height: 2),
-                  Text('We paused demanding habits for today. Rest comes first.',
+                  Text('Pausamos los hábitos más demandantes por hoy. Primero el descanso.',
                       style: TextStyle(fontSize: 14)),
                 ],
               ),
@@ -146,8 +146,8 @@ class RoutinesView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Daily progress', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-              Text('$done of $total active', style: TextStyle(fontSize: 14, color: colors.textSecondary)),
+              const Text('Progreso diario', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+              Text('$done de $total activos', style: TextStyle(fontSize: 14, color: colors.textSecondary)),
             ],
           ),
           const SizedBox(height: 8),
@@ -163,7 +163,7 @@ class RoutinesView extends StatelessWidget {
           const SizedBox(height: 12),
           TextField(
             onChanged: viewModel.setFilterText,
-            decoration: const InputDecoration(hintText: 'Filter your habits', prefixIcon: Icon(Icons.search)),
+            decoration: const InputDecoration(hintText: 'Filtra tus hábitos', prefixIcon: Icon(Icons.search)),
           ),
           const SizedBox(height: 10),
           SizedBox(
@@ -192,13 +192,14 @@ class RoutinesView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 24),
               child: Center(
-                  child: Text('No habits here.', style: TextStyle(color: colors.textSecondary))),
+                  child: Text('No hay hábitos aquí.', style: TextStyle(color: colors.textSecondary))),
             )
           else
             for (final habit in viewModel.filteredHabits)
               _HabitRow(
                 habit: habit,
                 done: viewModel.todayLogFor(habit) != null,
+                isToggling: viewModel.togglingHabitId == habit.id,
                 onToggle: () => viewModel.toggleHabit(habit),
                 onLongPress: () => _confirmDelete(context, habit),
                 myRating: viewModel.aiPauseRatings[habit.id],
@@ -214,13 +215,13 @@ class RoutinesView extends StatelessWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Delete "${habit.name}"?'),
-        content: const Text('This cannot be undone.'),
+        title: Text('¿Eliminar "${habit.name}"?'),
+        content: const Text('Esto no se puede deshacer.'),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
           TextButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Delete', style: TextStyle(color: Colors.red))),
+              child: const Text('Eliminar', style: TextStyle(color: Colors.red))),
         ],
       ),
     );
@@ -231,6 +232,7 @@ class RoutinesView extends StatelessWidget {
 class _HabitRow extends StatelessWidget {
   final Habit habit;
   final bool done;
+  final bool isToggling;
   final VoidCallback onToggle;
   final VoidCallback onLongPress;
   final int? myRating;
@@ -240,6 +242,7 @@ class _HabitRow extends StatelessWidget {
   const _HabitRow({
     required this.habit,
     required this.done,
+    required this.isToggling,
     required this.onToggle,
     required this.onLongPress,
     required this.myRating,
@@ -259,23 +262,33 @@ class _HabitRow extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
-            onTap: paused ? null : onToggle,
+            onTap: (paused || isToggling) ? null : onToggle,
             onLongPress: onLongPress,
             child: Row(
               children: [
-                Container(
+                SizedBox(
                   width: 28,
                   height: 28,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: done ? colors.success : Colors.transparent,
-                    border: Border.all(
-                      color: paused ? colors.textSecondary : (done ? colors.success : colors.inputBorder),
-                      width: 2,
-                      style: BorderStyle.solid,
-                    ),
-                  ),
-                  child: done ? const Icon(Icons.check, size: 16, color: Colors.white) : null,
+                  child: isToggling
+                      ? const Padding(
+                          padding: EdgeInsets.all(4),
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: done ? colors.success : Colors.transparent,
+                            border: Border.all(
+                              color: paused
+                                  ? colors.textSecondary
+                                  : (done ? colors.success : colors.inputBorder),
+                              width: 2,
+                              style: BorderStyle.solid,
+                            ),
+                          ),
+                          child:
+                              done ? const Icon(Icons.check, size: 16, color: Colors.white) : null,
+                        ),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -293,7 +306,7 @@ class _HabitRow extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  paused ? 'Paused by AI' : '${habit.streak} days',
+                  paused ? 'Pausado por IA' : '${habit.streak} días',
                   style: TextStyle(fontSize: 13, color: colors.textSecondary),
                 ),
               ],
@@ -304,7 +317,7 @@ class _HabitRow extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 42),
               child: AiRatingStars(
-                prompt: 'Was pausing this helpful?',
+                prompt: '¿Te fue útil que se pausara?',
                 submittedRating: myRating,
                 isSubmitting: isSubmittingRating,
                 onRate: onRate,

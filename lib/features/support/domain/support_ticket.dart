@@ -52,4 +52,24 @@ class SupportTicket {
             .toList(),
         updatedAt: json['updated_at'] == null ? null : DateTime.parse(json['updated_at'] as String),
       );
+
+  /// The backend stores status as free English text (default 'open', set by
+  /// support staff otherwise); this maps the known values to Spanish and
+  /// falls back to the raw value for anything else.
+  String get statusLabel {
+    switch (status.toLowerCase()) {
+      case 'open':
+        return 'Abierto';
+      case 'closed':
+        return 'Cerrado';
+      case 'resolved':
+        return 'Resuelto';
+      case 'in_progress':
+        return 'En progreso';
+      case 'pending':
+        return 'Pendiente';
+      default:
+        return status;
+    }
+  }
 }

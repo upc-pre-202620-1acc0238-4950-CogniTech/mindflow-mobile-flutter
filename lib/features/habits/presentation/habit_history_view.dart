@@ -20,7 +20,7 @@ class HabitHistoryView extends StatelessWidget {
       ..sort((a, b) => (b.completedAt ?? b.date).compareTo(a.completedAt ?? a.date));
 
     if (completed.isEmpty) {
-      return Center(child: Text('No completions yet.', style: TextStyle(color: colors.textSecondary)));
+      return Center(child: Text('Aún no hay hábitos completados.', style: TextStyle(color: colors.textSecondary)));
     }
 
     return RefreshIndicator(
@@ -43,7 +43,7 @@ class HabitHistoryView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(log.habitName, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                      Text('Completed', style: TextStyle(fontSize: 13, color: colors.textSecondary)),
+                      Text('Completado', style: TextStyle(fontSize: 13, color: colors.textSecondary)),
                     ],
                   ),
                 ),
@@ -59,7 +59,7 @@ class HabitHistoryView extends StatelessWidget {
   String _label(DateTime date) {
     final now = DateTime.now();
     final dayPart =
-        DateUtils.isSameDay(date, now) ? 'Today' : DateFormat('EEE d').format(date);
+        DateUtils.isSameDay(date, now) ? 'Hoy' : DateFormat('EEE d').format(date);
     return '$dayPart · ${DateFormat('HH:mm').format(date)}';
   }
 }

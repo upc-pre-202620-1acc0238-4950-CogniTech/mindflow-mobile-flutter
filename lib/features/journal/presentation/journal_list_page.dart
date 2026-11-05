@@ -49,7 +49,7 @@ class _JournalListPageState extends State<JournalListPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Journal',
+                      const Text('Diario',
                           style: TextStyle(
                               fontSize: 28, fontWeight: FontWeight.w600, letterSpacing: -0.01)),
                       IconButton.filled(
@@ -75,14 +75,14 @@ class _JournalListPageState extends State<JournalListPage> {
                       children: [
                         Expanded(
                           child: _TabButton(
-                            label: 'List',
+                            label: 'Lista',
                             selected: !_showCalendar,
                             onTap: () => setState(() => _showCalendar = false),
                           ),
                         ),
                         Expanded(
                           child: _TabButton(
-                            label: 'Calendar',
+                            label: 'Calendario',
                             selected: _showCalendar,
                             onTap: () => setState(() => _showCalendar = true),
                           ),
@@ -95,43 +95,51 @@ class _JournalListPageState extends State<JournalListPage> {
                     TextField(
                       onChanged: _viewModel.onSearchChanged,
                       decoration: const InputDecoration(
-                        hintText: 'Search your thoughts',
+                        hintText: 'Busca en tus pensamientos',
                         prefixIcon: Icon(Icons.search),
                       ),
                     ),
                     const SizedBox(height: 10),
-                    SizedBox(
-                      height: 40,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: JournalListViewModel.categories.length,
-                        separatorBuilder: (_, index) => const SizedBox(width: 8),
-                        itemBuilder: (context, i) {
-                          final selected = i == _viewModel.categoryIndex;
-                          return ChoiceChip(
-                            label: Text(JournalListViewModel.categories[i]),
-                            selected: selected,
-                            onSelected: (_) => _viewModel.selectCategory(i),
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      height: 40,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: JournalListViewModel.sentiments.length,
-                        separatorBuilder: (_, index) => const SizedBox(width: 8),
-                        itemBuilder: (context, i) {
-                          final selected = i == _viewModel.sentimentIndex;
-                          return ChoiceChip(
-                            label: Text(JournalListViewModel.sentiments[i]),
-                            selected: selected,
-                            onSelected: (_) => _viewModel.selectSentiment(i),
-                          );
-                        },
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DropdownButtonFormField<int>(
+                            value: _viewModel.categoryIndex,
+                            isExpanded: true,
+                            decoration: const InputDecoration(isDense: true),
+                            items: List.generate(
+                              JournalListViewModel.categories.length,
+                              (i) => DropdownMenuItem(
+                                value: i,
+                                child: Text(JournalListViewModel.categories[i],
+                                    overflow: TextOverflow.ellipsis),
+                              ),
+                            ),
+                            onChanged: (i) {
+                              if (i != null) _viewModel.selectCategory(i);
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: DropdownButtonFormField<int>(
+                            value: _viewModel.sentimentIndex,
+                            isExpanded: true,
+                            decoration: const InputDecoration(isDense: true),
+                            items: List.generate(
+                              JournalListViewModel.sentiments.length,
+                              (i) => DropdownMenuItem(
+                                value: i,
+                                child: Text(JournalListViewModel.sentiments[i],
+                                    overflow: TextOverflow.ellipsis),
+                              ),
+                            ),
+                            onChanged: (i) {
+                              if (i != null) _viewModel.selectSentiment(i);
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                   const SizedBox(height: 4),
@@ -159,7 +167,7 @@ class _JournalListPageState extends State<JournalListPage> {
     final entries = _viewModel.filteredEntries;
     if (entries.isEmpty) {
       return Center(
-          child: Text('No entries yet.', style: TextStyle(color: colors.textSecondary)));
+          child: Text('Aún no hay entradas.', style: TextStyle(color: colors.textSecondary)));
     }
     return RefreshIndicator(
       onRefresh: _viewModel.refresh,
@@ -237,7 +245,7 @@ class _EntryRow extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(entry.title.isEmpty ? '(No title)' : entry.title,
+                  Text(entry.title.isEmpty ? '(Sin título)' : entry.title,
                       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Text(
                     entry.content,
@@ -246,7 +254,7 @@ class _EntryRow extends StatelessWidget {
                     style: TextStyle(fontSize: 14, color: colors.textSecondary),
                   ),
                   const SizedBox(height: 2),
-                  Text('${entry.category} · ${entry.sentiment}',
+                  Text('${entry.category} · ${entry.sentimentLabel}',
                       style: const TextStyle(fontSize: 13)),
                 ],
               ),
@@ -259,7 +267,7 @@ class _EntryRow extends StatelessWidget {
 
   String _dayLabel(DateTime date) {
     final now = DateTime.now();
-    if (DateUtils.isSameDay(date, now)) return 'Today';
+    if (DateUtils.isSameDay(date, now)) return 'Hoy';
     return DateFormat('EEE d').format(date);
   }
 }

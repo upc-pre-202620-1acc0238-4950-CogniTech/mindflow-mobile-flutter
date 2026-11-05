@@ -63,12 +63,12 @@ class _PinEntryDialogState extends State<PinEntryDialog> {
         ],
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancelar')),
         TextButton(
           onPressed: _controller.text.length == 4
               ? () => Navigator.of(context).pop(_controller.text)
               : null,
-          child: const Text('Continue'),
+          child: const Text('Continuar'),
         ),
       ],
     );

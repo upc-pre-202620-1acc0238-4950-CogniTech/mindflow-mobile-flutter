@@ -8,6 +8,11 @@ class HabitSuggestionsViewModel extends ChangeNotifier {
   final GetHabitSuggestionsUseCase getSuggestions;
   final CreateHabitUseCase createHabit;
 
+  /// Called after a suggestion is successfully turned into a habit, so the
+  /// Routines tab's list can be kept in sync without the user having to
+  /// manually pull-to-refresh it.
+  VoidCallback? onHabitAdded;
+
   HabitSuggestionsViewModel({required this.getSuggestions, required this.createHabit}) {
     refresh();
   }
@@ -27,7 +32,7 @@ class HabitSuggestionsViewModel extends ChangeNotifier {
     try {
       suggestions = await getSuggestions.execute();
     } catch (_) {
-      errorMessage = 'Could not load suggestions right now.';
+      errorMessage = 'No se pudieron cargar sugerencias por ahora.';
     } finally {
       isLoading = false;
       notifyListeners();
@@ -44,8 +49,9 @@ class HabitSuggestionsViewModel extends ChangeNotifier {
     try {
       await createHabit.execute(name: s.name, category: s.category, frequency: s.frequency);
       addedIndexes.add(index);
+      onHabitAdded?.call();
     } catch (_) {
-      errorMessage = 'Could not add that habit. Try again.';
+      errorMessage = 'No se pudo agregar ese hábito. Intenta de nuevo.';
     } finally {
       _addingIndex = null;
       notifyListeners();

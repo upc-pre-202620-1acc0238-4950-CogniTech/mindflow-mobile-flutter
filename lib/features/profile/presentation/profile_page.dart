@@ -45,14 +45,14 @@ class _ProfilePageState extends State<ProfilePage> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete your account?'),
+        title: const Text('¿Eliminar tu cuenta?'),
         content: const Text(
-            'This cannot be undone. Consider exporting your data first.'),
+            'Esto no se puede deshacer. Considera exportar tus datos primero.'),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete permanently', style: TextStyle(color: Colors.red)),
+            child: const Text('Eliminar permanentemente', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -76,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final colors = context.colors;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(title: const Text('Perfil')),
       body: SafeArea(
         child: ListenableBuilder(
           listenable: _viewModel,
@@ -87,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
             final profile = _viewModel.profile;
             if (profile == null) {
               return Center(
-                  child: Text(_viewModel.errorMessage ?? 'Could not load profile.',
+                  child: Text(_viewModel.errorMessage ?? 'No se pudo cargar el perfil.',
                       style: TextStyle(color: colors.crisisText)));
             }
             final initial = profile.displayName.isNotEmpty ? profile.displayName[0].toUpperCase() : '?';
@@ -107,17 +107,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       const SizedBox(width: 14),
                       Expanded(
-                        child: Text('Your avatar uses your initial.',
+                        child: Text('Tu avatar usa tu inicial.',
                             style: TextStyle(fontSize: 14, color: colors.textSecondary)),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const Text('Full name', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                  const Text('Nombre completo', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
                   const SizedBox(height: 6),
                   TextField(controller: _nameController),
                   const SizedBox(height: 12),
-                  const Text('Email', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                  const Text('Correo', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
                   const SizedBox(height: 6),
                   TextField(
                     enabled: false,
@@ -125,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: InputDecoration(filled: true, fillColor: colors.border.withValues(alpha: 0.2)),
                   ),
                   const SizedBox(height: 12),
-                  const Text('Occupation', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                  const Text('Ocupación', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
                   const SizedBox(height: 6),
                   TextField(controller: _occupationController),
                   const SizedBox(height: 16),
@@ -144,12 +144,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                        : const Text('Save changes'),
+                        : const Text('Guardar cambios'),
                   ),
                   if (_viewModel.saved)
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
-                      child: Text('Changes saved',
+                      child: Text('Cambios guardados',
                           style: TextStyle(color: colors.successText, fontWeight: FontWeight.w600)),
                     ),
                   const SizedBox(height: 24),
@@ -162,12 +162,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Danger zone',
+                        Text('Zona de riesgo',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w600, color: colors.crisisText)),
                         const SizedBox(height: 6),
                         const Text(
-                            'Deleting your account permanently removes your profile, journal entries and habits.'),
+                            'Eliminar tu cuenta borra permanentemente tu perfil, entradas de diario y hábitos.'),
                         const SizedBox(height: 10),
                         OutlinedButton(
                           onPressed: _viewModel.isDeleting ? null : _confirmDelete,
@@ -177,7 +177,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           child: _viewModel.isDeleting
                               ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
-                              : const Text('Delete my account'),
+                              : const Text('Eliminar mi cuenta'),
                         ),
                       ],
                     ),

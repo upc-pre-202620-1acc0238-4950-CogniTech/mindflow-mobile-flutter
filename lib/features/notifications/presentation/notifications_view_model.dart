@@ -43,7 +43,7 @@ class NotificationsViewModel extends ChangeNotifier {
       notifications = await getNotifications.execute();
       await refreshUnreadCount();
     } catch (_) {
-      errorMessage = 'Could not load your notifications.';
+      errorMessage = 'No se pudieron cargar tus notificaciones.';
     } finally {
       isLoading = false;
       notifyListeners();
@@ -65,7 +65,7 @@ class NotificationsViewModel extends ChangeNotifier {
       await markAllRead.execute();
       await loadAll();
     } catch (_) {
-      errorMessage = 'Could not mark all as read.';
+      errorMessage = 'No se pudo marcar todo como leído.';
       notifyListeners();
     }
   }

@@ -13,8 +13,15 @@ class JournalListViewModel extends ChangeNotifier {
 
   /// Entries can only ever be created with these categories (see
   /// NewEntryPage); 'All' is a UI-only filter, not a real category.
-  static const categories = ['All', 'Work', 'Family', 'Personal reflection', 'Health', 'Learning'];
-  static const sentiments = ['Any mood', 'Positive', 'Neutral', 'Negative'];
+  static const categories = ['Todas', 'Trabajo', 'Familia', 'Reflexión personal', 'Salud', 'Aprendizaje'];
+
+  /// Display labels for the sentiment filter. Index 0 means "any".
+  static const sentiments = ['Cualquier estado', 'Positivo', 'Neutral', 'Negativo'];
+
+  /// The backend always returns sentiment as English ('positive' /
+  /// 'neutral' / 'negative'), regardless of the app's display language —
+  /// this is what [filteredEntries] actually matches against.
+  static const _sentimentValues = ['', 'positive', 'neutral', 'negative'];
 
   bool isLoading = true;
   String? errorMessage;
@@ -32,7 +39,7 @@ class JournalListViewModel extends ChangeNotifier {
     try {
       _entries = await getEntries.execute(query: searchText.trim().isEmpty ? null : searchText);
     } catch (_) {
-      errorMessage = 'Could not load your journal. Pull down to try again.';
+      errorMessage = 'No se pudo cargar tu diario. Desliza hacia abajo para reintentar.';
     } finally {
       isLoading = false;
       notifyListeners();
@@ -59,7 +66,7 @@ class JournalListViewModel extends ChangeNotifier {
     return _entries.where((e) {
       final matchesCategory = categoryIndex == 0 || e.category == categories[categoryIndex];
       final matchesSentiment = sentimentIndex == 0 ||
-          e.sentiment.toLowerCase() == sentiments[sentimentIndex].toLowerCase();
+          e.sentiment.toLowerCase() == _sentimentValues[sentimentIndex];
       return matchesCategory && matchesSentiment;
     }).toList();
   }

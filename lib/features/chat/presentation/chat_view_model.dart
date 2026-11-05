@@ -39,7 +39,7 @@ class ChatViewModel extends ChangeNotifier {
         messages = detail.messages;
       }
     } catch (_) {
-      errorMessage = 'Could not load your conversation.';
+      errorMessage = 'No se pudo cargar tu conversación.';
     } finally {
       isLoading = false;
       notifyListeners();
@@ -69,7 +69,7 @@ class ChatViewModel extends ChangeNotifier {
       }
     } catch (_) {
       messages = messages.where((m) => m.id != optimistic.id).toList();
-      errorMessage = 'Message could not be sent. Try again.';
+      errorMessage = 'No se pudo enviar el mensaje. Intenta de nuevo.';
     } finally {
       isSending = false;
       notifyListeners();

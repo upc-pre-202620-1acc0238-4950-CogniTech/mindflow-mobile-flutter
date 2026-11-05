@@ -28,9 +28,9 @@ class HabitsViewModel extends ChangeNotifier {
     refresh();
   }
 
-  static const statuses = ['All', 'Done', 'Pending', 'Paused'];
-  static const categories = ['Physical health', 'Mental health', 'Sleep', 'Learning'];
-  static const frequencies = ['Daily', 'Weekly'];
+  static const statuses = ['Todos', 'Hechos', 'Pendientes', 'Pausados'];
+  static const categories = ['Salud física', 'Salud mental', 'Sueño', 'Aprendizaje'];
+  static const frequencies = ['Diario', 'Semanal'];
 
   bool isLoading = true;
   bool isMutating = false;
@@ -40,6 +40,7 @@ class HabitsViewModel extends ChangeNotifier {
 
   int statusFilterIndex = 0;
   String filterText = '';
+  int? togglingHabitId;
 
   final Map<int, int> aiPauseRatings = {};
   int? submittingRatingForHabitId;
@@ -49,15 +50,22 @@ class HabitsViewModel extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
-      final results = await Future.wait([getHabits.execute(), getLogs.execute()]);
-      habits = results[0] as List<Habit>;
-      logs = results[1] as List<HabitLog>;
+      await _reload();
     } catch (_) {
-      errorMessage = 'Could not load your habits. Pull down to try again.';
+      errorMessage = 'No se pudieron cargar tus hábitos. Desliza hacia abajo para reintentar.';
     } finally {
       isLoading = false;
       notifyListeners();
     }
+  }
+
+  /// Re-fetches habits/logs without the `isLoading` flag, so a single
+  /// toggle/add/delete doesn't blank out the whole list with the
+  /// full-screen spinner that `refresh()` shows on first load.
+  Future<void> _reload() async {
+    final results = await Future.wait([getHabits.execute(), getLogs.execute()]);
+    habits = results[0] as List<Habit>;
+    logs = results[1] as List<HabitLog>;
   }
 
   void setFilterText(String value) {
@@ -103,15 +111,16 @@ class HabitsViewModel extends ChangeNotifier {
   }
 
   Future<void> toggleHabit(Habit habit) async {
-    if (habit.pausedByAi) return;
-    isMutating = true;
+    if (habit.pausedByAi || togglingHabitId != null) return;
+    togglingHabitId = habit.id;
     notifyListeners();
     try {
       await toggleToday.execute(habit, existingTodayLog: todayLogFor(habit));
-      await refresh();
+      await _reload();
     } catch (_) {
-      errorMessage = 'Could not update that habit. Try again.';
-      isMutating = false;
+      errorMessage = 'No se pudo actualizar ese hábito. Intenta de nuevo.';
+    } finally {
+      togglingHabitId = null;
       notifyListeners();
     }
   }
@@ -122,13 +131,14 @@ class HabitsViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       await createHabit.execute(name: name.trim(), category: category, frequency: frequency);
-      await refresh();
+      await _reload();
       return true;
     } catch (_) {
-      errorMessage = 'Could not add that habit. Try again.';
+      errorMessage = 'No se pudo agregar ese hábito. Intenta de nuevo.';
+      return false;
+    } finally {
       isMutating = false;
       notifyListeners();
-      return false;
     }
   }
 
@@ -137,9 +147,10 @@ class HabitsViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       await deleteHabit.execute(id);
-      await refresh();
+      await _reload();
     } catch (_) {
-      errorMessage = 'Could not delete that habit. Try again.';
+      errorMessage = 'No se pudo eliminar ese hábito. Intenta de nuevo.';
+    } finally {
       isMutating = false;
       notifyListeners();
     }
@@ -152,7 +163,7 @@ class HabitsViewModel extends ChangeNotifier {
       await submitAiFeedback.execute(contentId: habit.id, contentType: 'habit', rating: rating);
       aiPauseRatings[habit.id] = rating;
     } catch (_) {
-      errorMessage = 'Could not save your rating.';
+      errorMessage = 'No se pudo guardar tu calificación.';
     } finally {
       submittingRatingForHabitId = null;
       notifyListeners();

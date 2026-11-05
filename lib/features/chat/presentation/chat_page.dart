@@ -63,7 +63,7 @@ class _ChatPageState extends State<ChatPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('MindFlow AI', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
-            Text('Private to you', style: TextStyle(fontSize: 13, color: Color(0xFF5A6070))),
+            Text('Privado para ti', style: TextStyle(fontSize: 13, color: Color(0xFF5A6070))),
           ],
         ),
         actions: [
@@ -76,7 +76,7 @@ class _ChatPageState extends State<ChatPage> {
                 side: BorderSide(color: colors.crisis),
                 minimumSize: const Size(0, 40),
               ),
-              child: const Text('Support'),
+              child: const Text('Soporte'),
             ),
           ),
         ],
@@ -95,7 +95,7 @@ class _ChatPageState extends State<ChatPage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(24),
                                 child: Text(
-                                  'Write what is on your mind. MindFlow AI replies with support.',
+                                  'Escribe lo que tienes en mente. MindFlow AI responde con apoyo.',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(color: colors.textSecondary),
                                 ),
@@ -116,7 +116,7 @@ class _ChatPageState extends State<ChatPage> {
                 const Padding(
                   padding: EdgeInsets.fromLTRB(20, 0, 20, 8),
                   child: Text(
-                    'MindFlow AI is a wellbeing companion, not a replacement for professional care.',
+                    'MindFlow AI es un apoyo para tu bienestar, no un reemplazo del cuidado profesional.',
                     style: TextStyle(fontSize: 13, color: Color(0xFF5A6070)),
                   ),
                 ),
@@ -128,7 +128,7 @@ class _ChatPageState extends State<ChatPage> {
                       Expanded(
                         child: TextField(
                           controller: _controller,
-                          decoration: const InputDecoration(hintText: 'Write a message'),
+                          decoration: const InputDecoration(hintText: 'Escribe un mensaje'),
                           onSubmitted: (_) => _send(),
                         ),
                       ),

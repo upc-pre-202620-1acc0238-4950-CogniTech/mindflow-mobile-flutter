@@ -31,7 +31,7 @@ class _PlansPageState extends State<PlansPage> {
     final colors = context.colors;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Plans')),
+      appBar: AppBar(title: const Text('Planes')),
       body: SafeArea(
         child: ListenableBuilder(
           listenable: _viewModel,
@@ -46,7 +46,7 @@ class _PlansPageState extends State<PlansPage> {
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
                 children: [
-                  Text('Invest in your wellbeing. Pick the plan that fits your pace.',
+                  Text('Invierte en tu bienestar. Elige el plan que se ajuste a tu ritmo.',
                       style: TextStyle(fontSize: 16, color: colors.textSecondary)),
                   const SizedBox(height: 16),
                   if (_viewModel.errorMessage != null) ...[
@@ -55,15 +55,15 @@ class _PlansPageState extends State<PlansPage> {
                   ],
                   _PlanCard(
                     title: 'Freemium',
-                    priceLabel: 'Free',
+                    priceLabel: 'Gratis',
                     current: !isPremium,
                     highlighted: false,
                     features: const [
-                      'Interactive journal with AI replies',
-                      'Habits that adapt to stress',
-                      'Breathing and meditation guides',
-                      'Analytics: entries, sentiment, categories',
-                      'PDF and CSV export',
+                      'Diario interactivo con respuestas de IA',
+                      'Hábitos que se adaptan al estrés',
+                      'Guías de respiración y meditación',
+                      'Análisis: entradas, estado de ánimo, categorías',
+                      'Exportación en PDF y CSV',
                     ],
                   ),
                   const SizedBox(height: 14),
@@ -73,8 +73,8 @@ class _PlansPageState extends State<PlansPage> {
                     current: isPremium,
                     highlighted: true,
                     features: const [
-                      'Everything in Freemium',
-                      'Supports the project\'s development',
+                      'Todo lo de Freemium',
+                      'Apoya el desarrollo del proyecto',
                     ],
                     action: isPremium
                         ? null
@@ -86,17 +86,17 @@ class _PlansPageState extends State<PlansPage> {
                                     width: 20,
                                     height: 20,
                                     child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                                : const Text('Upgrade to Premium'),
+                                : const Text('Mejorar a Premium'),
                           ),
                     note: isPremium
                         ? null
-                        : 'Stripe opens in test mode. No real charge is made.',
+                        : 'Stripe se abre en modo de prueba. No se realiza ningún cargo real.',
                   ),
                   const SizedBox(height: 14),
                   Text(
-                    'Payments are processed by Stripe. Today, Freemium and Premium unlock the same '
-                    'features in the app — Premium is the plan that keeps the project funded as more '
-                    'premium-only features ship.',
+                    'Los pagos son procesados por Stripe. Por ahora, Freemium y Premium desbloquean '
+                    'las mismas funciones en la app — Premium es el plan que mantiene financiado el '
+                    'proyecto a medida que se lancen más funciones exclusivas.',
                     style: TextStyle(fontSize: 13, color: colors.textSecondary),
                   ),
                 ],
@@ -110,9 +110,9 @@ class _PlansPageState extends State<PlansPage> {
 
   String _premiumPriceLabel() {
     final premium = _viewModel.plans.where((p) => p.isPremium).toList();
-    if (premium.isEmpty) return '\$4.99 / month';
+    if (premium.isEmpty) return '\$4.99 / mes';
     final p = premium.first;
-    return '\$${p.price.toStringAsFixed(2)} / ${p.interval ?? "month"}';
+    return '\$${p.price.toStringAsFixed(2)} / ${p.interval ?? "mes"}';
   }
 }
 
@@ -158,7 +158,7 @@ class _PlanCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  current ? 'Your plan' : (highlighted ? 'Recommended' : ''),
+                  current ? 'Tu plan' : (highlighted ? 'Recomendado' : ''),
                   style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,

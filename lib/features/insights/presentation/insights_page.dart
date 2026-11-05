@@ -24,7 +24,7 @@ class _InsightsPageState extends State<InsightsPage> {
   Future<void> _export({required bool pdf}) async {
     final path = await _viewModel.export(pdf: pdf);
     if (path != null && mounted) {
-      await SharePlus.instance.share(ShareParams(files: [XFile(path)], text: 'MindFlow report'));
+      await SharePlus.instance.share(ShareParams(files: [XFile(path)], text: 'Reporte de MindFlow'));
     }
   }
 
@@ -44,7 +44,7 @@ class _InsightsPageState extends State<InsightsPage> {
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(20, 24, 20, 110),
                 children: [
-                  const Text('Insights',
+                  const Text('Análisis',
                       style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600, letterSpacing: -0.01)),
                   const SizedBox(height: 12),
                   if (_viewModel.isLoading && dashboard == null)
@@ -55,11 +55,11 @@ class _InsightsPageState extends State<InsightsPage> {
                   else ...[
                     Row(
                       children: [
-                        _StatCard(label: 'Entries', value: '${dashboard?.journalEntries ?? 0}'),
+                        _StatCard(label: 'Entradas', value: '${dashboard?.journalEntries ?? 0}'),
                         const SizedBox(width: 8),
-                        _StatCard(label: 'Active habits', value: '${dashboard?.activeHabits ?? 0}'),
+                        _StatCard(label: 'Hábitos activos', value: '${dashboard?.activeHabits ?? 0}'),
                         const SizedBox(width: 8),
-                        _StatCard(label: 'Best streak', value: '${_viewModel.bestStreak} d'),
+                        _StatCard(label: 'Mejor racha', value: '${_viewModel.bestStreak} d'),
                       ],
                     ),
                     const SizedBox(height: 14),
@@ -107,7 +107,7 @@ class _InsightsPageState extends State<InsightsPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Overall positivity',
+                            Text('Positividad general',
                                 style: TextStyle(fontSize: 13, color: colors.textSecondary)),
                             Text('${(dashboard.positivityRate * 100).round()}%',
                                 style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w600)),
@@ -136,9 +136,9 @@ class _InsightsPageState extends State<InsightsPage> {
                             Wrap(
                               spacing: 14,
                               children: [
-                                _Legend(color: colors.success, label: 'Positive (${dashboard.positive})'),
+                                _Legend(color: colors.success, label: 'Positivo (${dashboard.positive})'),
                                 _Legend(color: colors.textSecondary, label: 'Neutral (${dashboard.neutral})'),
-                                _Legend(color: colors.crisis, label: 'Negative (${dashboard.negative})'),
+                                _Legend(color: colors.crisis, label: 'Negativo (${dashboard.negative})'),
                               ],
                             ),
                           ],
@@ -146,7 +146,7 @@ class _InsightsPageState extends State<InsightsPage> {
                       ),
                       if (dashboard.topCategories.isNotEmpty) ...[
                         const SizedBox(height: 18),
-                        Text('Top categories',
+                        Text('Categorías principales',
                             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                         const SizedBox(height: 8),
                         for (final c in dashboard.topCategories)
@@ -167,7 +167,7 @@ class _InsightsPageState extends State<InsightsPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Habit completions', style: TextStyle(fontSize: 15)),
+                            const Text('Hábitos completados', style: TextStyle(fontSize: 15)),
                             Text('${dashboard.habitCompletions}', style: TextStyle(color: colors.textSecondary)),
                           ],
                         ),
@@ -180,9 +180,9 @@ class _InsightsPageState extends State<InsightsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Export your data', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                          const Text('Exporta tus datos', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                           const SizedBox(height: 4),
-                          Text('Share a structured report with your psychologist.',
+                          Text('Comparte un reporte estructurado con tu psicólogo.',
                               style: TextStyle(fontSize: 14, color: colors.textSecondary)),
                           const SizedBox(height: 10),
                           if (_viewModel.errorMessage != null)
@@ -200,7 +200,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                     foregroundColor: colors.text,
                                     side: const BorderSide(color: Color(0xFFB8C0CF)),
                                   ),
-                                  child: const Text('Export PDF'),
+                                  child: const Text('Exportar PDF'),
                                 ),
                               ),
                               const SizedBox(width: 8),
@@ -212,7 +212,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                     foregroundColor: colors.text,
                                     side: const BorderSide(color: Color(0xFFB8C0CF)),
                                   ),
-                                  child: const Text('Export CSV'),
+                                  child: const Text('Exportar CSV'),
                                 ),
                               ),
                             ],

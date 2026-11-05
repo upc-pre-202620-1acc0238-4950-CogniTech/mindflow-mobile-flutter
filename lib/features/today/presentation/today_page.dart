@@ -80,7 +80,7 @@ class _TodayPageState extends State<TodayPage> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
-                                '${_viewModel.pausedHabits} paused',
+                                '${_viewModel.pausedHabits} pausados',
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -99,14 +99,14 @@ class _TodayPageState extends State<TodayPage> {
                     children: [
                       Expanded(
                         child: _StatCard(
-                          label: 'Habits',
-                          value: '${_viewModel.activeHabits} of ${_viewModel.totalHabits}',
+                          label: 'Hábitos',
+                          value: '${_viewModel.activeHabits} de ${_viewModel.totalHabits}',
                         ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: _StatCard(
-                          label: 'Recent entries',
+                          label: 'Entradas recientes',
                           value: '${_viewModel.snapshot?.recentEntries.length ?? 0}',
                         ),
                       ),
@@ -122,24 +122,33 @@ class _TodayPageState extends State<TodayPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Check-in · how is your day going?',
+                        const Text('Check-in · ¿cómo va tu día?',
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                         const SizedBox(height: 12),
-                        Wrap(
-                          spacing: 6,
-                          runSpacing: 6,
+                        Row(
                           children: List.generate(TodayViewModel.moods.length, (i) {
                             final selected = i == _viewModel.selectedMood;
-                            return ChoiceChip(
-                              label: Text(TodayViewModel.moods[i].word),
-                              selected: selected,
-                              onSelected: (_) => _viewModel.pickMood(i),
-                              selectedColor: colors.primary,
-                              backgroundColor: colors.surface,
-                              labelStyle:
-                                  TextStyle(color: selected ? Colors.white : colors.text),
-                              side: BorderSide(
-                                  color: selected ? colors.primary : const Color(0xFFB8C0CF)),
+                            return Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    right: i == TodayViewModel.moods.length - 1 ? 0 : 6),
+                                child: ChoiceChip(
+                                  label: FittedBox(
+                                      child: Text(TodayViewModel.moods[i].word)),
+                                  labelPadding: const EdgeInsets.symmetric(horizontal: 2),
+                                  visualDensity: VisualDensity.compact,
+                                  selected: selected,
+                                  onSelected: (_) => _viewModel.pickMood(i),
+                                  selectedColor: colors.primary,
+                                  backgroundColor: colors.surface,
+                                  labelStyle: TextStyle(
+                                      fontSize: 13,
+                                      color: selected ? Colors.white : colors.text),
+                                  side: BorderSide(
+                                      color:
+                                          selected ? colors.primary : const Color(0xFFB8C0CF)),
+                                ),
+                              ),
                             );
                           }),
                         ),
@@ -152,10 +161,10 @@ class _TodayPageState extends State<TodayPage> {
                               style: TextStyle(fontSize: 14, color: colors.text),
                               children: [
                                 const TextSpan(
-                                    text: 'If it feels heavy, Línea 113, option 5, is free and '
-                                        'open 24 hours. '),
+                                    text: 'Si se siente pesado, la Línea 113, opción 5, es '
+                                        'gratuita y está disponible las 24 horas. '),
                                 TextSpan(
-                                  text: 'Call 113',
+                                  text: 'Llamar al 113',
                                   style: TextStyle(
                                       color: colors.crisisText, fontWeight: FontWeight.w600),
                                 ),
@@ -174,7 +183,7 @@ class _TodayPageState extends State<TodayPage> {
                                   height: 18,
                                   child: CircularProgressIndicator(
                                       strokeWidth: 2, color: Colors.white))
-                              : const Text('Save and talk it through'),
+                              : const Text('Guardar y hablarlo'),
                         ),
                         if (_viewModel.checkInResult?.aiResponse != null) ...[
                           const SizedBox(height: 10),
@@ -201,10 +210,10 @@ class _TodayPageState extends State<TodayPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Write what is on your mind',
+                          const Text('Escribe lo que tienes en mente',
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                           const SizedBox(height: 4),
-                          Text('Private and encrypted. MindFlow AI replies with support.',
+                          Text('Privado y encriptado. MindFlow AI responde con apoyo.',
                               style: TextStyle(fontSize: 14, color: colors.textSecondary)),
                         ],
                       ),
@@ -214,20 +223,20 @@ class _TodayPageState extends State<TodayPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Quick pauses',
+                      Text('Pausas rápidas',
                           style: TextStyle(
                               fontSize: 13, fontWeight: FontWeight.w600, color: colors.textSecondary)),
                       TextButton(
                         onPressed: () => Navigator.of(context).push(
                             MaterialPageRoute(builder: (_) => const WellnessExercisesPage())),
                         style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero),
-                        child: const Text('See all', style: TextStyle(fontSize: 13)),
+                        child: const Text('Ver todas', style: TextStyle(fontSize: 13)),
                       ),
                     ],
                   ),
                   const SizedBox(height: 4),
                   if (_viewModel.featuredBreathing == null && _viewModel.featuredMeditation == null)
-                    Text('No guided exercises available right now.',
+                    Text('No hay ejercicios guiados disponibles por ahora.',
                         style: TextStyle(fontSize: 14, color: colors.textSecondary))
                   else
                     Row(
@@ -258,7 +267,7 @@ class _TodayPageState extends State<TodayPage> {
                     ),
                   if ((_viewModel.snapshot?.recentEntries.isNotEmpty ?? false)) ...[
                     const SizedBox(height: 24),
-                    Text('Recent entries',
+                    Text('Entradas recientes',
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -307,8 +316,8 @@ class _TodayPageState extends State<TodayPage> {
 
   String _greeting(String name) {
     final hour = DateTime.now().hour;
-    final period = hour < 12 ? 'morning' : (hour < 18 ? 'afternoon' : 'evening');
-    return name.isEmpty ? 'Good $period' : 'Good $period, $name';
+    final period = hour < 12 ? 'Buenos días' : (hour < 18 ? 'Buenas tardes' : 'Buenas noches');
+    return name.isEmpty ? period : '$period, $name';
   }
 }
 
@@ -360,8 +369,14 @@ class _QuickPauseTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-            Text(subtitle, style: TextStyle(fontSize: 13, color: colors.textSecondary)),
+            Text(title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+            Text(subtitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 13, color: colors.textSecondary)),
           ],
         ),
       ),

@@ -35,7 +35,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
     final colors = context.colors;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Ticket')),
+      appBar: AppBar(title: const Text('Ticket de soporte')),
       body: SafeArea(
         child: ListenableBuilder(
           listenable: _viewModel,
@@ -46,7 +46,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
             final ticket = _viewModel.ticket;
             if (ticket == null) {
               return Center(
-                  child: Text(_viewModel.errorMessage ?? 'Not found.',
+                  child: Text(_viewModel.errorMessage ?? 'No encontrado.',
                       style: TextStyle(color: colors.crisisText)));
             }
 
@@ -66,7 +66,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                           color: colors.tintBlue,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Text(ticket.status,
+                        child: Text(ticket.statusLabel,
                             style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: colors.primary)),
                       ),
                     ],
@@ -91,7 +91,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(m.isStaff ? 'Support' : 'You',
+                                  Text(m.isStaff ? 'Soporte' : 'Tú',
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: m.isStaff ? colors.textSecondary : Colors.white70)),
@@ -127,7 +127,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                       Expanded(
                         child: TextField(
                           controller: _controller,
-                          decoration: const InputDecoration(hintText: 'Write a reply'),
+                          decoration: const InputDecoration(hintText: 'Escribe una respuesta'),
                         ),
                       ),
                       const SizedBox(width: 10),

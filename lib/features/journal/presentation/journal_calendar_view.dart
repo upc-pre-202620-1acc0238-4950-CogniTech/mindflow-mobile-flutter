@@ -90,11 +90,11 @@ class _JournalCalendarViewState extends State<JournalCalendarView> {
         const SizedBox(height: 10),
         Row(
           children: [
-            _Legend(color: colors.success, label: 'Positive'),
+            _Legend(color: colors.success, label: 'Positivo'),
             const SizedBox(width: 16),
             _Legend(color: colors.textSecondary, label: 'Neutral', ring: true),
             const SizedBox(width: 16),
-            _Legend(color: colors.crisis, label: 'Negative', square: true),
+            _Legend(color: colors.crisis, label: 'Negativo', square: true),
           ],
         ),
         const SizedBox(height: 14),
@@ -109,7 +109,7 @@ class _JournalCalendarViewState extends State<JournalCalendarView> {
               if (dayEntries.isEmpty)
                 Padding(
                   padding: const EdgeInsets.only(top: 6),
-                  child: Text('No entries on this day.',
+                  child: Text('No hay entradas este día.',
                       style: TextStyle(fontSize: 14, color: colors.textSecondary)),
                 )
               else
@@ -124,9 +124,9 @@ class _JournalCalendarViewState extends State<JournalCalendarView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(entry.title.isEmpty ? '(No title)' : entry.title,
+                          Text(entry.title.isEmpty ? '(Sin título)' : entry.title,
                               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                          Text('${entry.category} · ${entry.sentiment}',
+                          Text('${entry.category} · ${entry.sentimentLabel}',
                               style: TextStyle(fontSize: 14, color: colors.textSecondary)),
                         ],
                       ),
