@@ -30,6 +30,9 @@ class LoginViewModel extends ChangeNotifier {
     } on ApiException catch (e) {
       errorMessage = e.message;
       return null;
+    } catch (_) {
+      errorMessage = 'No se pudo conectar. Revisa tu conexión e intenta de nuevo.';
+      return null;
     } finally {
       isLoading = false;
       notifyListeners();
@@ -44,6 +47,9 @@ class LoginViewModel extends ChangeNotifier {
       return await googleAuth.execute(credential: credential);
     } on ApiException catch (e) {
       errorMessage = e.message;
+      return null;
+    } catch (_) {
+      errorMessage = 'No se pudo conectar. Revisa tu conexión e intenta de nuevo.';
       return null;
     } finally {
       isLoading = false;

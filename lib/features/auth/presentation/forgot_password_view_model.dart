@@ -21,6 +21,8 @@ class ForgotPasswordViewModel extends ChangeNotifier {
       sent = true;
     } on ApiException catch (e) {
       errorMessage = e.message;
+    } catch (_) {
+      errorMessage = 'No se pudo conectar. Revisa tu conexión e intenta de nuevo.';
     } finally {
       isLoading = false;
       notifyListeners();

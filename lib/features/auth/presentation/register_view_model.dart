@@ -31,6 +31,9 @@ class RegisterViewModel extends ChangeNotifier {
     } on ApiException catch (e) {
       errorMessage = e.message;
       return false;
+    } catch (_) {
+      errorMessage = 'No se pudo conectar. Revisa tu conexión e intenta de nuevo.';
+      return false;
     } finally {
       isLoading = false;
       notifyListeners();

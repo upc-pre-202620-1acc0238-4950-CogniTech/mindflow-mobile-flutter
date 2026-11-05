@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/di/service_locator.dart';
+import '../../../core/navigation/app_shell.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../terms/presentation/terms_page.dart';
@@ -49,8 +50,16 @@ class _RegisterPageState extends State<RegisterPage> {
     if (ok) {
       // Sign-up issues no token; sign the user in right after, same flow
       // the Android app follows.
-      await _loginViewModel.submit(email: email, password: password);
-      if (mounted) Navigator.of(context).pop();
+      final session = await _loginViewModel.submit(email: email, password: password);
+      if (!mounted) return;
+      if (session != null) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const AppShell()),
+          (route) => false,
+        );
+      } else {
+        Navigator.of(context).pop();
+      }
     }
   }
 
