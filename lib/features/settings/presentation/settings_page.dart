@@ -31,14 +31,14 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _togglePin(bool enable) async {
     if (enable) {
       final pin = await PinEntryDialog.show(context,
-          title: 'Set a 4-digit PIN', subtitle: 'Ask for this code when you open the app.');
+          title: 'Crea un PIN de 4 dígitos', subtitle: 'Se pedirá este código al abrir la app.');
       if (pin == null || pin.length != 4) return;
       if (!mounted) return;
-      final confirmPin = await PinEntryDialog.show(context, title: 'Confirm your PIN');
+      final confirmPin = await PinEntryDialog.show(context, title: 'Confirma tu PIN');
       if (confirmPin != pin) {
         if (mounted) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('PINs did not match.')));
+              .showSnackBar(const SnackBar(content: Text('Los PIN no coinciden.')));
         }
         return;
       }
@@ -48,7 +48,7 @@ class _SettingsPageState extends State<SettingsPage> {
       }
     } else {
       final pin = await PinEntryDialog.show(context,
-          title: 'Enter your PIN', subtitle: 'Confirm your PIN to turn off the lock.');
+          title: 'Ingresa tu PIN', subtitle: 'Confirma tu PIN para desactivar el bloqueo.');
       if (pin == null || pin.length != 4) return;
       final error = await _viewModel.removePin(pin);
       if (error != null && mounted) {
@@ -87,7 +87,7 @@ class _SettingsPageState extends State<SettingsPage> {
             return ListView(
               padding: const EdgeInsets.fromLTRB(20, 24, 20, 40),
               children: [
-                const Text('Settings',
+                const Text('Ajustes',
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600, letterSpacing: -0.01)),
                 const SizedBox(height: 14),
                 InkWell(
@@ -108,7 +108,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           children: [
                             Text(profile?.displayName ?? '',
                                 style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
-                            Text('Edit profile', style: TextStyle(fontSize: 14, color: colors.textSecondary)),
+                            Text('Editar perfil', style: TextStyle(fontSize: 14, color: colors.textSecondary)),
                           ],
                         ),
                       ),
@@ -120,68 +120,68 @@ class _SettingsPageState extends State<SettingsPage> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(color: colors.border.withValues(alpha: 0.25), borderRadius: BorderRadius.circular(12)),
-                  child: const Text('Your entries are private to you. Nobody at your company sees them.',
+                  child: const Text('Tus entradas son privadas. Nadie en tu empresa puede verlas.',
                       style: TextStyle(fontSize: 14)),
                 ),
-                _SectionLabel('Privacy'),
+                _SectionLabel('Privacidad'),
                 _SettingsSwitchRow(
-                  title: 'PIN lock',
-                  subtitle: 'Ask for a 4-digit code when you open the app',
+                  title: 'Bloqueo con PIN',
+                  subtitle: 'Pide un código de 4 dígitos al abrir la app',
                   value: _viewModel.hasPin,
                   enabled: !_viewModel.isMutatingPin,
                   onChanged: _togglePin,
                 ),
                 _SettingsNavRow(
-                  title: 'Export my data',
-                  subtitle: 'PDF or CSV',
+                  title: 'Exportar mis datos',
+                  subtitle: 'PDF o CSV',
                   onTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Open the Insights tab to export your data.')));
+                        const SnackBar(content: Text('Abre la pestaña de Análisis para exportar tus datos.')));
                   },
                 ),
-                _SectionLabel('Experience'),
+                _SectionLabel('Experiencia'),
                 _SettingsSwitchRow(
-                  title: 'Dark mode',
-                  subtitle: 'Easier on the eyes at night',
+                  title: 'Modo oscuro',
+                  subtitle: 'Más cómodo para los ojos de noche',
                   value: _viewModel.isDarkMode,
                   onChanged: _viewModel.setDarkMode,
                 ),
                 _LanguageRow(viewModel: _viewModel),
                 _SettingsSwitchRow(
-                  title: 'Habit reminders',
-                  subtitle: 'Saved as your preference on this device',
+                  title: 'Recordatorios de hábitos',
+                  subtitle: 'Se guarda como tu preferencia en este dispositivo',
                   value: _viewModel.habitReminders,
                   onChanged: _viewModel.setHabitReminders,
                 ),
                 _SectionLabel('Plan'),
                 _SettingsNavRow(
-                  title: _viewModel.plan == 'premium' ? 'Premium plan' : 'Free plan',
-                  subtitle: _viewModel.plan == 'premium' ? 'Thanks for supporting MindFlow' : 'See plans',
+                  title: _viewModel.plan == 'premium' ? 'Plan Premium' : 'Plan gratuito',
+                  subtitle: _viewModel.plan == 'premium' ? 'Gracias por apoyar a MindFlow' : 'Ver planes',
                   onTap: () => Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => const PlansPage()))
                       .then((_) => _viewModel.refreshAfterProfileEdit()),
                 ),
-                _SectionLabel('Help'),
+                _SectionLabel('Ayuda'),
                 _SettingsNavRow(
-                  title: 'Crisis support',
-                  subtitle: 'Línea 113, option 5 · free, 24 h',
+                  title: 'Apoyo en crisis',
+                  subtitle: 'Línea 113, opción 5 · gratis, 24 h',
                   titleColor: colors.crisisText,
                   onTap: () => launchUrl(Uri.parse('tel:113')),
                 ),
                 _SettingsNavRow(
-                  title: 'Support and FAQ',
-                  subtitle: 'Send a ticket or read common questions',
+                  title: 'Soporte y preguntas frecuentes',
+                  subtitle: 'Envía un ticket o lee preguntas comunes',
                   onTap: () => Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => const SupportPage())),
                 ),
                 _SettingsNavRow(
-                  title: 'AI feedback',
-                  subtitle: 'Your ratings of MindFlow AI\'s replies and decisions',
+                  title: 'Comentarios sobre la IA',
+                  subtitle: 'Tus calificaciones de las respuestas y decisiones de MindFlow AI',
                   onTap: () => Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => const AiFeedbackHistoryPage())),
                 ),
                 _SettingsNavRow(
-                  title: 'Terms and privacy',
+                  title: 'Términos y privacidad',
                   onTap: () =>
                       Navigator.of(context).push(MaterialPageRoute(builder: (_) => const TermsPage())),
                 ),
@@ -193,7 +193,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     foregroundColor: colors.text,
                     side: const BorderSide(color: Color(0xFFB8C0CF)),
                   ),
-                  child: const Text('Log out'),
+                  child: const Text('Cerrar sesión'),
                 ),
               ],
             );
@@ -303,7 +303,7 @@ class _LanguageRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final current = viewModel.localeController.locale?.languageCode ?? 'en';
+    final current = viewModel.localeController.locale?.languageCode ?? 'es';
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -314,8 +314,9 @@ class _LanguageRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Language', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                Text('App language', style: TextStyle(fontSize: 13)),
+                Text('Idioma', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                Text('Solo afecta las pantallas de inicio de sesión',
+                    style: TextStyle(fontSize: 13)),
               ],
             ),
           ),
@@ -329,7 +330,19 @@ class _LanguageRow extends StatelessWidget {
               children: ['en', 'es'].map((code) {
                 final selected = current == code;
                 return InkWell(
-                  onTap: () => viewModel.setLanguage(code),
+                  onTap: selected
+                      ? null
+                      : () {
+                          viewModel.setLanguage(code);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(code == 'es'
+                                  ? 'Idioma cambiado a Español (se aplica al instante en las pantallas de inicio de sesión).'
+                                  : 'Language switched to English (applies instantly on the sign-in screens).'),
+                              duration: const Duration(seconds: 4),
+                            ),
+                          );
+                        },
                   borderRadius: BorderRadius.circular(8),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
