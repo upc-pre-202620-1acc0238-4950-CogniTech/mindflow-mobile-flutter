@@ -80,7 +80,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                 height: 40,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  color: selected ? const Color(0xFF1B2333) : Colors.transparent,
+                                  color: selected ? colors.text : Colors.transparent,
                                   borderRadius: BorderRadius.circular(9),
                                 ),
                                 child: Text(
@@ -88,7 +88,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
-                                      color: selected ? Colors.white : const Color(0xFF1B2333)),
+                                      color: selected ? colors.background : colors.text),
                                 ),
                               ),
                             ),

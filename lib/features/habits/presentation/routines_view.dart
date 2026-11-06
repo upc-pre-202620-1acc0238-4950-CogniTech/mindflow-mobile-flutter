@@ -22,6 +22,7 @@ class RoutinesView extends StatelessWidget {
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: StatefulBuilder(
             builder: (context, setSheetState) {
+              final colors = context.colors;
               return Padding(
                 padding: const EdgeInsets.fromLTRB(20, 22, 20, 28),
                 child: Column(
@@ -58,10 +59,10 @@ class RoutinesView extends StatelessWidget {
                               onPressed: () => setSheetState(() => frequency = i),
                               style: OutlinedButton.styleFrom(
                                 minimumSize: const Size.fromHeight(44),
-                                backgroundColor: selected ? const Color(0xFF1B2333) : null,
-                                foregroundColor: selected ? Colors.white : const Color(0xFF1B2333),
+                                backgroundColor: selected ? colors.text : null,
+                                foregroundColor: selected ? colors.background : colors.text,
                                 side: BorderSide(
-                                    color: selected ? const Color(0xFF1B2333) : const Color(0xFFB8C0CF)),
+                                    color: selected ? colors.text : const Color(0xFFB8C0CF)),
                               ),
                               child: Text(HabitsViewModel.frequencies[i]),
                             ),
@@ -270,9 +271,10 @@ class _HabitRow extends StatelessWidget {
                   width: 28,
                   height: 28,
                   child: isToggling
-                      ? const Padding(
-                          padding: EdgeInsets.all(4),
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                      ? Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, color: colors.primary),
                         )
                       : Container(
                           decoration: BoxDecoration(

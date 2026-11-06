@@ -189,6 +189,7 @@ class _TabButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     return InkWell(
       borderRadius: BorderRadius.circular(9),
       onTap: onTap,
@@ -196,14 +197,14 @@ class _TabButton extends StatelessWidget {
         height: 40,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: selected ? const Color(0xFF1B2333) : Colors.transparent,
+          color: selected ? colors.text : Colors.transparent,
           borderRadius: BorderRadius.circular(9),
         ),
         child: Text(label,
             style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
-                color: selected ? Colors.white : const Color(0xFF1B2333))),
+                color: selected ? colors.background : colors.text)),
       ),
     );
   }

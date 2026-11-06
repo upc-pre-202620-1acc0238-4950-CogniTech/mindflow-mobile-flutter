@@ -20,7 +20,16 @@ class ThemeController extends ChangeNotifier {
     }
   }
 
-  bool get isDark => mode == ThemeMode.dark;
+  /// Whether the app is *currently rendering* dark, including when [mode]
+  /// is [ThemeMode.system] — so the Settings toggle matches what's on
+  /// screen instead of only reflecting an explicit user override.
+  bool get isDark {
+    if (mode == ThemeMode.system) {
+      return WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+          Brightness.dark;
+    }
+    return mode == ThemeMode.dark;
+  }
 
   Future<void> setDark(bool enabled) async {
     mode = enabled ? ThemeMode.dark : ThemeMode.light;

@@ -75,7 +75,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         selected: selected,
                         onSelected: (_) => _viewModel.selectCategory(i),
                         selectedColor: colors.text,
-                        labelStyle: TextStyle(color: selected ? Colors.white : colors.text),
+                        labelStyle: TextStyle(color: selected ? colors.background : colors.text),
                         backgroundColor: colors.surface,
                         side: BorderSide(color: selected ? colors.text : const Color(0xFFB8C0CF)),
                       );

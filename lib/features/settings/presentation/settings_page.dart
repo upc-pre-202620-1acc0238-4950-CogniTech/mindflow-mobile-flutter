@@ -347,13 +347,13 @@ class _LanguageRow extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                     decoration: BoxDecoration(
-                      color: selected ? const Color(0xFF1B2333) : Colors.transparent,
+                      color: selected ? colors.text : Colors.transparent,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(code.toUpperCase(),
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            color: selected ? Colors.white : const Color(0xFF1B2333))),
+                            color: selected ? colors.background : colors.text)),
                   ),
                 );
               }).toList(),
