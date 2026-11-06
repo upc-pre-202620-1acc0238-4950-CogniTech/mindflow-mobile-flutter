@@ -1,9 +1,29 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
     id("com.google.gms.google-services")
 }
+
+// Release signing: reads android/key.properties for local builds, or falls
+// back to env vars for CI (GitHub Actions writes the keystore file and sets
+// these before invoking Gradle). Falls back to the debug keystore if
+// neither is present, so a plain `flutter run --release` still works.
+val keystorePropertiesFile = rootProject.file("key.properties")
+val hasKeystoreProperties = keystorePropertiesFile.exists()
+val keystoreProperties = Properties().apply {
+    if (hasKeystoreProperties) load(FileInputStream(keystorePropertiesFile))
+}
+
+fun signingProp(propKey: String, envKey: String): String? =
+    if (hasKeystoreProperties) keystoreProperties.getProperty(propKey)
+    else System.getenv(envKey)
+
+val releaseStoreFile = signingProp("storeFile", "KEYSTORE_FILE")
+val hasReleaseSigning = releaseStoreFile != null
 
 android {
     namespace = "pe.edu.upc.mindflow_workday"
@@ -30,11 +50,27 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = file(releaseStoreFile!!)
+                storePassword = signingProp("storePassword", "KEYSTORE_PASSWORD")
+                keyAlias = signingProp("keyAlias", "KEY_ALIAS")
+                keyPassword = signingProp("keyPassword", "KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = if (hasReleaseSigning) {
+                signingConfigs.getByName("release")
+            } else {
+                // No keystore configured (e.g. a contributor's machine without
+                // key.properties) — fall back to the debug keystore so the
+                // build still works, just unsigned for real distribution.
+                signingConfigs.getByName("debug")
+            }
         }
     }
 }
