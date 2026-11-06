@@ -22,6 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _passwordController = TextEditingController();
   late final RegisterViewModel _viewModel;
   late final LoginViewModel _loginViewModel;
+  bool _obscurePassword = true;
 
   @override
   void initState() {
@@ -110,8 +111,18 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 6),
                   TextField(
                     controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(hintText: l10n.createPasswordHint),
+                    obscureText: _obscurePassword,
+                    decoration: InputDecoration(
+                      hintText: l10n.createPasswordHint,
+                      suffixIcon: TextButton(
+                        onPressed: () =>
+                            setState(() => _obscurePassword = !_obscurePassword),
+                        child: Text(
+                          _obscurePassword ? l10n.showPassword : l10n.hidePassword,
+                          style: TextStyle(color: colors.primary, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 14),
                   InkWell(

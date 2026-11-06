@@ -9,6 +9,8 @@ import 'core/theme/app_theme.dart';
 import 'core/theme/theme_controller.dart';
 import 'features/auth/domain/auth_repository.dart';
 import 'features/auth/presentation/login_page.dart';
+import 'features/auth/presentation/pin_lock_page.dart';
+import 'features/settings/infrastructure/pin_api.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
@@ -58,18 +60,34 @@ class AuthGate extends StatefulWidget {
   State<AuthGate> createState() => _AuthGateState();
 }
 
+enum _GateDestination { loggedOut, needsPin, loggedIn }
+
 class _AuthGateState extends State<AuthGate> {
-  late final Future<bool> _hasSession = getIt<AuthRepository>().hasSession();
+  late final Future<_GateDestination> _destination = _resolve();
+
+  Future<_GateDestination> _resolve() async {
+    final hasSession = await getIt<AuthRepository>().hasSession();
+    if (!hasSession) return _GateDestination.loggedOut;
+    final hasPin = await getIt<PinApi>().status();
+    return hasPin ? _GateDestination.needsPin : _GateDestination.loggedIn;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: _hasSession,
+    return FutureBuilder<_GateDestination>(
+      future: _destination,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
-        return snapshot.data! ? const AppShell() : const LoginPage();
+        switch (snapshot.data!) {
+          case _GateDestination.loggedOut:
+            return const LoginPage();
+          case _GateDestination.needsPin:
+            return const PinLockPage();
+          case _GateDestination.loggedIn:
+            return const AppShell();
+        }
       },
     );
   }
