@@ -8,15 +8,7 @@ plugins {
     id("com.google.gms.google-services")
 }
 
-// Release signing: reads android/key.properties for local builds, or falls
-// back to env vars for CI (GitHub Actions writes the keystore file and sets
-// these before invoking Gradle). Falls back to the debug keystore if
-// neither is present, so a plain `flutter run --release` still works.
-val keystorePropertiesFile = rootProject.file("key.properties")
-val hasKeystoreProperties = keystorePropertiesFile.exists()
-val keystoreProperties = Properties().apply {
-    if (hasKeystoreProperties) load(FileInputStream(keystorePropertiesFile))
-}
+
 
 fun signingProp(propKey: String, envKey: String): String? =
     if (hasKeystoreProperties) keystoreProperties.getProperty(propKey)
