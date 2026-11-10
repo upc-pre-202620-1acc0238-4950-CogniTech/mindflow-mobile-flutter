@@ -12,7 +12,7 @@ import 'api_exception.dart';
 /// note).
 class ApiClient {
   static const baseUrl =
-      'https://powerful-wholeness-production.up.railway.app/api/v1';
+      'https://mindflow-backend-production-898f07da.up.railway.app/api/v1';
 
   final http.Client _client;
   final TokenStorage _tokenStorage;
