@@ -185,7 +185,8 @@ class _MessageBubble extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 decoration: BoxDecoration(
-                  color: isUser ? colors.text : null,
+                  color: isUser ? colors.userBubble : colors.aiBubble,
+                  border: isUser ? null : Border.all(color: colors.aiBubbleBorder),
                   borderRadius: BorderRadius.only(
                     topLeft: const Radius.circular(14),
                     topRight: const Radius.circular(14),
@@ -195,7 +196,11 @@ class _MessageBubble extends StatelessWidget {
                 ),
                 child: Text(
                   message.content,
-                  style: TextStyle(fontSize: 16, height: 1.5, color: isUser ? Colors.white : colors.text),
+                  style: TextStyle(
+                    fontSize: 16,
+                    height: 1.5,
+                    color: isUser ? colors.userBubbleText : colors.text,
+                  ),
                 ),
               ),
             ],

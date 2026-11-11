@@ -20,6 +20,12 @@ class AppColors {
   final Color border;
   final Color inputBorder;
   final Color wordCloudAccent;
+  // Chat bubbles: the user's own messages and the assistant's replies get
+  // distinct, readable fills in both themes.
+  final Color userBubble;
+  final Color userBubbleText;
+  final Color aiBubble;
+  final Color aiBubbleBorder;
 
   const AppColors({
     required this.background,
@@ -40,6 +46,10 @@ class AppColors {
     required this.border,
     required this.inputBorder,
     required this.wordCloudAccent,
+    required this.userBubble,
+    required this.userBubbleText,
+    required this.aiBubble,
+    required this.aiBubbleBorder,
   });
 
   static const light = AppColors(
@@ -61,6 +71,10 @@ class AppColors {
     border: Color(0xFFE1E5EC),
     inputBorder: Color(0xFF7B8497),
     wordCloudAccent: Color(0xFF2B6AD9),
+    userBubble: Color(0xFF1B2333),
+    userBubbleText: Color(0xFFFFFFFF),
+    aiBubble: Color(0xFFF1F4FA),
+    aiBubbleBorder: Color(0xFFD5DBE6),
   );
 
   static const dark = AppColors(
@@ -82,6 +96,10 @@ class AppColors {
     border: Color(0xFF263044),
     inputBorder: Color(0xFF6B7590),
     wordCloudAccent: Color(0xFFA89CFF),
+    userBubble: Color(0xFF2B6AD9),
+    userBubbleText: Color(0xFFFFFFFF),
+    aiBubble: Color(0xFF1D2740),
+    aiBubbleBorder: Color(0xFF34415E),
   );
 }
 
