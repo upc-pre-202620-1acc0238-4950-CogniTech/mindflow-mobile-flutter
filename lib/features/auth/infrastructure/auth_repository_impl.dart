@@ -7,6 +7,7 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthApi api;
   final TokenStorage tokenStorage;
 
+  
   AuthRepositoryImpl({required this.api, required this.tokenStorage});
 
   AuthSession _sessionFromJson(Map<String, dynamic> json) => AuthSession(
@@ -28,6 +29,7 @@ class AuthRepositoryImpl implements AuthRepository {
     return session;
   }
 
+  
   @override
   Future<AuthSession> googleAuth({required String credential}) async {
     final json = await api.googleAuth(credential: credential);
@@ -35,7 +37,7 @@ class AuthRepositoryImpl implements AuthRepository {
     await tokenStorage.save(session.token);
     return session;
   }
-
+  
   @override
   Future<void> forgotPassword({required String email}) {
     return api.forgotPassword(email: email);
@@ -54,4 +56,5 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> signOut() => tokenStorage.clear();
+  
 }
