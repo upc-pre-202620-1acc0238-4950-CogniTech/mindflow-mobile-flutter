@@ -12,6 +12,13 @@ class HabitsApi {
     return (json as List).map((e) => Habit.fromJson(e as Map<String, dynamic>)).toList();
   }
 
+  /// The UI shows Spanish labels; the backend enum is `Daily/Weekly/Monthly`.
+  static const _frequencyToApi = {
+    'Diario': 'Daily',
+    'Semanal': 'Weekly',
+    'Mensual': 'Monthly',
+  };
+
   Future<Habit> createHabit({
     required String name,
     required String category,
@@ -20,7 +27,7 @@ class HabitsApi {
     final json = await client.post('/habits', body: {
       'name': name,
       'category': category,
-      'frequency': frequency,
+      'frequency': _frequencyToApi[frequency] ?? frequency,
       // Ignored server-side (the controller overwrites it with the JWT's
       // user id) but the resource requires the field.
       'user_id': 0,
@@ -32,7 +39,7 @@ class HabitsApi {
 
   Future<List<HabitLog>> getLogs({int? habitId}) async {
     final json = await client.get('/habit-logs', query: {
-      if (habitId != null) 'habit_id': habitId,
+      'habit_id': ?habitId,
     });
     return (json as List).map((e) => HabitLog.fromJson(e as Map<String, dynamic>)).toList();
   }

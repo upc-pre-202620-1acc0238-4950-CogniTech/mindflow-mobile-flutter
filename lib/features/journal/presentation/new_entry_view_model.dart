@@ -21,7 +21,7 @@ class NewEntryViewModel extends ChangeNotifier {
   }
 
   Future<void> save(String content) async {
-    if (content.trim().isEmpty) return;
+    if (content.trim().isEmpty || isLoading) return;
     isLoading = true;
     errorMessage = null;
     notifyListeners();

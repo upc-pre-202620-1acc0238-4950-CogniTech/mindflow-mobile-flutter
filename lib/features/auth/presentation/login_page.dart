@@ -9,6 +9,8 @@ import 'forgot_password_page.dart';
 import 'login_view_model.dart';
 import 'register_page.dart';
 
+const _googleSignInEnabled = false;
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -82,29 +84,33 @@ class _LoginPageState extends State<LoginPage> {
                   Text(l10n.loginSubtitle,
                       style: TextStyle(fontSize: 16, height: 1.5, color: colors.textSecondary)),
                   const SizedBox(height: 24),
-                  OutlinedButton.icon(
-                    onPressed: _viewModel.isLoading ? null : () {},
-                    icon: GoogleGlyphIcon(color: colors.text),
-                    label: Text(l10n.continueWithGoogle),
-                    style: OutlinedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(48),
-                      foregroundColor: colors.text,
-                      side: const BorderSide(color: Color(0xFFB8C0CF)),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  Row(
-                    children: [
-                      Expanded(child: Divider(color: colors.border)),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Text(l10n.orUseEmail,
-                            style: TextStyle(fontSize: 13, color: colors.textSecondary)),
+                  // El acceso con Google queda oculto hasta integrar el SDK (google_sign_in);
+                  // el backend y el caso de uso ya están listos (submitGoogle).
+                  if (_googleSignInEnabled) ...[
+                      OutlinedButton.icon(
+                        onPressed: _viewModel.isLoading ? null : () {},
+                        icon: GoogleGlyphIcon(color: colors.text),
+                        label: Text(l10n.continueWithGoogle),
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(48),
+                          foregroundColor: colors.text,
+                          side: const BorderSide(color: Color(0xFFB8C0CF)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
                       ),
-                      Expanded(child: Divider(color: colors.border)),
-                    ],
-                  ),
+                      const SizedBox(height: 18),
+                      Row(
+                        children: [
+                          Expanded(child: Divider(color: colors.border)),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Text(l10n.orUseEmail,
+                                style: TextStyle(fontSize: 13, color: colors.textSecondary)),
+                          ),
+                          Expanded(child: Divider(color: colors.border)),
+                        ],
+                      ),
+                  ],
                   const SizedBox(height: 4),
                   Text(l10n.emailLabel,
                       style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),

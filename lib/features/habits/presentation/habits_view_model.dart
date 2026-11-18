@@ -5,6 +5,7 @@ import '../application/create_habit_use_case.dart';
 import '../application/delete_habit_use_case.dart';
 import '../application/get_habit_logs_use_case.dart';
 import '../application/get_habits_use_case.dart';
+import '../../wellness/application/run_stress_check_use_case.dart';
 import '../application/toggle_habit_today_use_case.dart';
 import '../domain/habit.dart';
 import '../domain/habit_log.dart';
@@ -16,6 +17,7 @@ class HabitsViewModel extends ChangeNotifier {
   final DeleteHabitUseCase deleteHabit;
   final ToggleHabitTodayUseCase toggleToday;
   final SubmitAiFeedbackUseCase submitAiFeedback;
+  final RunStressCheckUseCase runStressCheck;
 
   HabitsViewModel({
     required this.getHabits,
@@ -24,6 +26,7 @@ class HabitsViewModel extends ChangeNotifier {
     required this.deleteHabit,
     required this.toggleToday,
     required this.submitAiFeedback,
+    required this.runStressCheck,
   }) {
     refresh();
   }
@@ -56,6 +59,26 @@ class HabitsViewModel extends ChangeNotifier {
     } finally {
       isLoading = false;
       notifyListeners();
+    }
+    _syncStress();
+  }
+
+  bool _stressChecked = false;
+
+  /// Best effort, once per visit: asks the backend to evaluate stress (which
+  /// pauses/resumes habits) and reloads the list only if something changed.
+  /// It runs after the list is already on screen because it calls Gemini.
+  Future<void> _syncStress() async {
+    if (_stressChecked || errorMessage != null) return;
+    _stressChecked = true;
+    try {
+      final changed = await runStressCheck.execute();
+      if (changed) {
+        await _reload();
+        notifyListeners();
+      }
+    } catch (_) {
+      // The check is an enhancement; the habits list works without it.
     }
   }
 
@@ -126,7 +149,8 @@ class HabitsViewModel extends ChangeNotifier {
   }
 
   Future<bool> addHabit({required String name, required String category, required String frequency}) async {
-    if (name.trim().isEmpty) return false;
+    // Evita crear duplicados si el usuario toca dos veces mientras el servidor responde
+    if (name.trim().isEmpty || isMutating) return false;
     isMutating = true;
     notifyListeners();
     try {

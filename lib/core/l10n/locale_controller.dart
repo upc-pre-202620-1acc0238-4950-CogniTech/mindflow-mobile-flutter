@@ -6,7 +6,7 @@ class LocaleController extends ChangeNotifier {
   static const _key = 'app_locale';
   final LocalPrefs _prefs;
 
-  LocaleController({required LocalPrefs prefs}) : _prefs = prefs {
+  LocaleController({required this._prefs}) {
     _load();
   }
 

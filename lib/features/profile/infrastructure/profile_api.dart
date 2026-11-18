@@ -12,8 +12,8 @@ class ProfileApi {
 
   Future<UserProfile> updateProfile({String? name, String? occupation}) async {
     final json = await client.put('/users/profile', body: {
-      if (name != null) 'name': name,
-      if (occupation != null) 'occupation': occupation,
+      'name': ?name,
+      'occupation': ?occupation,
     });
     return UserProfile.fromJson(json as Map<String, dynamic>);
   }

@@ -6,7 +6,7 @@ class ThemeController extends ChangeNotifier {
   static const _key = 'dark_mode_enabled';
   final LocalPrefs _prefs;
 
-  ThemeController({required LocalPrefs prefs}) : _prefs = prefs {
+  ThemeController({required this._prefs}) {
     _load();
   }
 

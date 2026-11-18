@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../core/di/service_locator.dart';
 import '../../../core/navigation/app_shell.dart';
+import '../../../core/network/api_exception.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../settings/infrastructure/pin_api.dart';
 import '../domain/auth_repository.dart';
@@ -42,7 +43,24 @@ class _PinLockPageState extends State<PinLockPage> {
       _checking = true;
       _error = null;
     });
-    final valid = await getIt<PinApi>().verify(_controller.text);
+    bool valid;
+    try {
+      valid = await getIt<PinApi>().verify(_controller.text);
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _checking = false;
+        _error = e.message;
+      });
+      return;
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _checking = false;
+        _error = 'No se pudo verificar el PIN. Revisa tu conexión.';
+      });
+      return;
+    }
     if (!mounted) return;
     if (valid) {
       Navigator.of(context)

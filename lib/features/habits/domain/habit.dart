@@ -17,6 +17,14 @@ class Habit {
     required this.pausedByAi,
   });
 
+  /// Spanish label for the backend value (`daily` / `weekly` / `monthly`).
+  String get frequencyLabel => switch (frequency.toLowerCase()) {
+        'daily' || 'diario' => 'Diario',
+        'weekly' || 'semanal' => 'Semanal',
+        'monthly' || 'mensual' => 'Mensual',
+        _ => frequency,
+      };
+
   factory Habit.fromJson(Map<String, dynamic> json) => Habit(
         id: json['id'] as int,
         name: json['name'] as String,

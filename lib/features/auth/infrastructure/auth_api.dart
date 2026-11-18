@@ -10,7 +10,7 @@ class AuthApi {
     return client.post(
       '/users/sign-up',
       auth: false,
-      body: {'email': email, 'password': password, if (name != null) 'name': name},
+      body: {'email': email, 'password': password, 'name': ?name},
     );
   }
 

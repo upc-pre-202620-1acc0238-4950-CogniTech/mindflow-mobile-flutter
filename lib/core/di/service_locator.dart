@@ -78,12 +78,12 @@ import '../../features/support/presentation/ticket_detail_view_model.dart';
 import '../../features/today/application/load_today_use_case.dart';
 import '../../features/today/presentation/today_view_model.dart';
 import '../../features/wellness/application/get_wellness_exercises_use_case.dart';
+import '../../features/wellness/application/run_stress_check_use_case.dart';
 import '../../features/wellness/infrastructure/wellness_api.dart';
 import '../../features/wellness/presentation/wellness_exercises_view_model.dart';
 import '../l10n/locale_controller.dart';
 import '../network/api_client.dart';
 import '../platform/privacy_channel.dart';
-import '../storage/app_database.dart';
 import '../storage/local_prefs.dart';
 import '../storage/token_storage.dart';
 import '../theme/theme_controller.dart';
@@ -105,7 +105,6 @@ void setupDependencies() {
       ));
 
   // Core
-  getIt.registerLazySingleton<AppDatabase>(() => AppDatabase());
   getIt.registerLazySingleton<TokenStorage>(() => TokenStorage());
   getIt.registerLazySingleton<ApiClient>(
       () => ApiClient(tokenStorage: getIt<TokenStorage>()));
@@ -256,6 +255,7 @@ void setupDependencies() {
         deleteHabit: getIt<DeleteHabitUseCase>(),
         toggleToday: getIt<ToggleHabitTodayUseCase>(),
         submitAiFeedback: getIt<SubmitAiFeedbackUseCase>(),
+        runStressCheck: getIt<RunStressCheckUseCase>(),
       ));
   getIt.registerFactory<HabitSuggestionsViewModel>(() => HabitSuggestionsViewModel(
         getSuggestions: getIt<GetHabitSuggestionsUseCase>(),
@@ -303,6 +303,8 @@ void setupDependencies() {
 
   // Wellness
   getIt.registerLazySingleton<WellnessApi>(() => WellnessApi(client: getIt<ApiClient>()));
+  getIt.registerLazySingleton<RunStressCheckUseCase>(
+      () => RunStressCheckUseCase(api: getIt<WellnessApi>()));
   getIt.registerLazySingleton<GetWellnessExercisesUseCase>(
       () => GetWellnessExercisesUseCase(api: getIt<WellnessApi>()));
   getIt.registerFactory<WellnessExercisesViewModel>(

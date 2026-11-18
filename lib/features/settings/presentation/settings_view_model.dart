@@ -13,7 +13,7 @@ import '../../subscriptions/domain/subscription_plan.dart';
 import '../infrastructure/pin_api.dart';
 
 class SettingsViewModel extends ChangeNotifier {
-  static const _hideInSwitcherKey = 'hide_in_switcher';
+  static const hideInSwitcherKey = 'hide_in_switcher';
   static const _remindersKey = 'habit_reminders';
 
   final GetProfileUseCase getProfile;
@@ -56,7 +56,7 @@ class SettingsViewModel extends ChangeNotifier {
         getProfile.execute(),
         pinApi.status(),
         getMySubscription.execute(),
-        prefs.getBool(_hideInSwitcherKey),
+        prefs.getBool(hideInSwitcherKey),
         prefs.getBool(_remindersKey),
       ]);
       profile = results[0] as UserProfile;
@@ -109,7 +109,7 @@ class SettingsViewModel extends ChangeNotifier {
   Future<void> setHideInSwitcher(bool enabled) async {
     hideInSwitcher = enabled;
     notifyListeners();
-    await prefs.setBool(_hideInSwitcherKey, enabled);
+    await prefs.setBool(hideInSwitcherKey, enabled);
     await privacyChannel.setHideInSwitcher(enabled);
   }
 

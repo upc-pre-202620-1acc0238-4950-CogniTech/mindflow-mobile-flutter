@@ -15,7 +15,7 @@ class ChatApi {
   Future<ConversationDetail> createConversation({required String content, String? category}) async {
     final json = await client.post('/chat/conversations', body: {
       'content': content,
-      if (category != null) 'category': category,
+      'category': ?category,
     });
     return ConversationDetail.fromJson(json as Map<String, dynamic>);
   }
